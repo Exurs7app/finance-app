@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEWMONT - Ultra Edition Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg: #050505; 
+            --card: #121212; 
+            --accent: #8b5cf6; 
+            --accent-light: #a78bfa;
+            --text-dim: #9ca3af; 
+            --border: #1f2937; 
+            --success: #10b981; 
+            --gold: #f59e0b; 
+            --danger: #ef4444;
+            --tg-blue: #24A1DE;
+        }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; background: var(--bg); color: white; direction: rtl; 
+            overflow-x: hidden; scroll-behavior: smooth;
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
+        .fade-in { animation: fadeInUp 0.5s ease forwards; }
+
+        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1b4b, #050505); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-container { width: 100%; max-width: 380px; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+        
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px; z-index: 11000; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent-light); }
+
+        .header { background: rgba(5, 5, 5, 0.8); padding: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
+        .nav { position: fixed; bottom: 0; width: 100%; background: rgba(10, 10, 10, 0.95); display: flex; justify-content: space-around; padding: 10px 0 28px; border-top: 1px solid var(--border); z-index: 90; }
+        .nav-item { color: #666; font-size: 11px; text-align: center; flex: 1; cursor: pointer; transition: 0.3s; position: relative; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.active i { transform: translateY(-5px); color: var(--accent); }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; transition: 0.3s; }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 15px; }
+        .btn-main { background: var(--accent); color: white; padding: 14px; border: none; border-radius: 14px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-main:active { transform: scale(0.96); opacity: 0.9; }
+        .btn-pulse { animation: pulse 2s infinite; }
+
+        .addr-display { background: #000; border: 1px dashed var(--accent); padding: 15px; border-radius: 12px; font-size: 12px; word-break: break-all; color: #fff; margin: 15px 0; cursor: pointer; position: relative; }
+        .addr-display::after { content: '\f0c5'; font-family: 'Font Awesome 6 Free'; position: absolute; left: 10px; color: var(--accent); }
+
+        .vip-badge { background: linear-gradient(90deg, var(--gold), #ffcf33); color: black; padding: 2px 10px; border-radius: 6px; font-size: 10px; font-weight: 900; }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal { background: #111; width: 92%; max-width: 400px; border-radius: 28px; padding: 25px; border: 1px solid #333; animation: fadeInUp 0.3s ease; position: relative; max-height: 85vh; overflow-y: auto; }
+        
+        .close-modal { position: absolute; top: 15px; left: 15px; color: var(--text-dim); font-size: 20px; cursor: pointer; padding: 5px; }
+
+        .input-box { background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; width: 100%; color: white; margin-bottom: 12px; outline: none; font-size: 14px; }
+        .network-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .net-btn { background: #1a1a1a; border: 1px solid var(--border); color: var(--text-dim); padding: 8px; border-radius: 10px; font-size: 11px; cursor: pointer; transition: 0.3s; }
+        .net-btn.active { border-color: var(--accent); color: white; background: rgba(139, 92, 246, 0.1); }
+
+        .live-dot { height: 8px; width: 8px; background: var(--success); border-radius: 50%; display: inline-block; margin-left: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        .history-item { border-bottom: 1px solid #1a1a1a; padding: 12px 0; display: flex; justify-content: space-between; align-items: center; }
+        .status-pending { color: var(--gold); font-size: 10px; }
+        .status-success { color: var(--success); font-size: 10px; }
+
+        /* ستايل إضافي لصفحة الفريق */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 15px; text-align: center; }
+        .level-card { background: #1a1a1a; border-radius: 15px; padding: 15px; margin-bottom: 10px; border-right: 4px solid var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div id="toast">تم النسخ بنجاح ✅</div>
+
+    <!-- تسجيل الدخول -->
+    <div id="login-page">
+        <div class="login-container fade-in">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <i class="fa-solid fa-gem" style="font-size: 50px; color: var(--accent); margin-bottom: 15px;"></i>
+                <h1 style="margin: 0; font-size: 28px; letter-spacing: 2px;">NEWMONT</h1>
+                <p style="color: var(--text-dim); font-size: 13px;">مستقبل التعدين السحابي الذكي</p>
+            </div>
+            <div class="input-group" style="margin-bottom: 15px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-user" style="color: var(--accent);"></i>
+                    <input type="text" id="login-email" placeholder="اسم المستخدم أو البريد" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+            <div class="input-group" style="margin-bottom: 25px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-lock" style="color: var(--accent);"></i>
+                    <input type="password" id="login-pass" placeholder="كلمة المرور" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+            <button class="btn-main btn-pulse" onclick="handleLogin()">دخول آمن <i class="fa-solid fa-shield-check"></i></button>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div id="app" class="hidden">
+        <header class="header">
+            <div onclick="openTelegram()" style="cursor:pointer;"><i class="fa-brands fa-telegram" style="color: var(--tg-blue); font-size: 22px;"></i></div>
+            <div style="font-weight: 900; letter-spacing: 2px; font-size: 18px;">NEWMONT <span style="color: var(--accent);">PRO</span></div>
+            <div onclick="openNotifications()" style="cursor:pointer; position: relative;">
+                <i class="fa-solid fa-bell"></i>
+                <span style="position: absolute; top: -5px; right: -5px; background: var(--danger); width: 8px; height: 8px; border-radius: 50%;"></span>
+            </div>
+        </header>
+
+        <div id="main-content" style="padding-bottom: 110px;"></div>
+
+        <nav class="nav">
+            <div class="nav-item" onclick="navTo('home')" id="n-home"><i class="fa-solid fa-house-chimney"></i>بيت</div>
+            <div class="nav-item" onclick="navTo('task')" id="n-task"><i class="fa-solid fa-screwdriver-wrench"></i>مهام</div>
+            <div class="nav-item" onclick="navTo('vip')" id="n-vip"><i class="fa-solid fa-gem"></i>VIP</div>
+            <div class="nav-item" onclick="navTo('team')" id="n-team"><i class="fa-solid fa-users-gear"></i>فريق</div>
+            <div class="nav-item" onclick="navTo('me')" id="n-me"><i class="fa-solid fa-circle-user"></i>حسابي</div>
+        </nav>
+    </div>
+
+    <!-- نافذة الإيداع -->
+    <div id="deposit-modal" class="overlay hidden">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center; margin-top:0;">إيداع USDT</h3>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <button class="btn-main" id="btn-trc" style="flex:1; background:var(--accent);" onclick="switchWallet('TRC')">TRC20</button>
+                <button class="btn-main" id="btn-bnb" style="flex:1; background:#222;" onclick="switchWallet('BNB')">BEP20</button>
+            </div>
+            <div class="addr-display" id="addr-text" onclick="copyAddr()">TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo</div>
+            <p style="font-size:11px; color:var(--text-dim); text-align:center;">يتم تأكيد الشحن تلقائياً خلال 1-3 دقائق بعد الدفع.</p>
+            <button class="btn-main" onclick="confirmDepositAction()">لقد قمت بالدفع</button>
+        </div>
+    </div>
+
+    <!-- نافذة السحب -->
+    <div id="withdraw-modal" class="overlay hidden">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center; margin-top:0;">سحب الأرباح</h3>
+            <p style="font-size:12px; color:var(--text-dim); text-align:center; margin-bottom:15px;">الرصيد القابل للسحب: <span id="with-bal" style="color:var(--success); font-weight:bold;">0.00</span> USDT</p>
+            <input type="number" id="withdraw-amount" class="input-box" placeholder="المبلغ (بحد أدنى 2 USDT)">
+            <input type="text" id="withdraw-addr" class="input-box" placeholder="عنوان محفظة السحب">
+            <button class="btn-main" onclick="handleWithdraw()">تأكيد طلب السحب</button>
+        </div>
+    </div>
+
+    <script>
+        const wallets = { 'TRC': 'TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo', 'BNB': '0xa70850a7d21f63daf498d1a1885692bdda8b1cde' };
+        let currentBalance = 0.00;
+        let selectedNetwork = 'TRC20';
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2000);
+        }
+
+        function copyAddr(txt) {
+            const target = txt || document.getElementById('addr-text').innerText;
+            navigator.clipboard.writeText(target);
+            showToast("تم النسخ بنجاح ✅");
+        }
+
+        function handleLogin() {
+            const e = document.getElementById('login-email').value;
+            const p = document.getElementById('login-pass').value;
+            if(e && p) {
+                localStorage.setItem('logged', 'true');
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                navTo('home');
+            } else { showToast("يرجى إدخال البيانات"); }
+        }
+
+        function navTo(page) {
+            const cont = document.getElementById('main-content');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('n-'+page).classList.add('active');
+            window.scrollTo(0,0);
+
+            if(page === 'home') {
+                cont.innerHTML = `
+                    <div class="fade-in">
+                        <div style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=800'); height: 180px; background-size: cover; margin: 15px; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; padding: 20px; border: 1px solid var(--border);">
+                            <h2 style="margin:0;">مرحباً بك في نيومونت</h2>
+                            <p style="font-size:12px; opacity:0.8;">عرض محدود: اربح 65 USDT يومياً من المستوى الجديد</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px;">
+                            <div onclick="openDeposit()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-plus-circle" style="color:var(--success); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">إيداع</div></div>
+                            <div onclick="openWithdraw()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--accent); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">سحب</div></div>
+                            <div onclick="navTo('team')" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-gift" style="color:var(--gold); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">مكافأة</div></div>
+                            <div onclick="openTelegram()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-brands fa-telegram" style="color:var(--tg-blue); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">دعم</div></div>
+                        </div>
+                        <div style="padding: 15px;"><h3 style="margin:0 0 15px; font-size:16px;"><span class="live-dot"></span> سحوبات مباشرة</h3><div id="investor-list"></div></div>
+                    </div>`;
+                renderInvestors();
+            } 
+            else if(page === 'team') {
+                const inviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
+                const inviteLink = window.location.origin + "/reg?code=" + inviteCode;
+                
+                cont.innerHTML = `
+                    <div class="fade-in" style="padding:20px;">
+                        <h3 style="margin-top:0;">مركز الفريق والمكافآت</h3>
+                        
+                        <!-- إحصائيات الفريق -->
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div>
+                                <div style="font-size:18px; font-weight:900; color:var(--accent);">0</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size:10px; color:var(--text-dim);">إجمالي الشحن</div>
+                                <div style="font-size:18px; font-weight:900; color:var(--success);">0.00</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div>
+                                <div style="font-size:18px; font-weight:900; color:var(--danger);">0.00</div>
+                            </div>
+                            <div class="stat-box">
+                                <div style="font-size:10px; color:var(--text-dim);">أرباح الفريق</div>
+                                <div style="font-size:18px; font-weight:900; color:var(--gold);">0.00</div>
+                            </div>
+                        </div>
+
+                        <!-- كود الدعوة ورابط المشاركة -->
+                        <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #121212); border-color: var(--accent);">
+                            <p style="font-size:12px; color:var(--text-dim); margin-bottom:10px;">كود الدعوة الخاص بك:</p>
+                            <div style="display:flex; gap:10px; align-items:center; margin-bottom:15px;">
+                                <div style="flex:1; background:#000; padding:12px; border-radius:10px; font-weight:bold; letter-spacing:2px; text-align:center; border:1px solid var(--border);">${inviteCode}</div>
+                                <button onclick="copyAddr('${inviteCode}')" style="background:var(--accent); border:none; color:white; padding:12px 20px; border-radius:10px;"><i class="fa-solid fa-copy"></i></button>
+                            </div>
+                            
+                            <p style="font-size:12px; color:var(--text-dim); margin-bottom:10px;">رابط الدعوة المباشر:</p>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <div style="flex:1; background:#000; padding:12px; border-radius:10px; font-size:10px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; border:1px solid var(--border); direction:ltr;">${inviteLink}</div>
+                                <button onclick="copyAddr('${inviteLink}')" style="background:var(--success); border:none; color:white; padding:12px 20px; border-radius:10px;"><i class="fa-solid fa-share-nodes"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- مستويات العمولة -->
+                        <h4 style="margin: 20px 0 10px;">تفاصيل المستويات</h4>
+                        <div class="level-card">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <div style="font-weight:bold;">المستوى A (الأول)</div>
+                                    <div style="font-size:11px; color:var(--text-dim);">العمولة المباشرة من الإيداع</div>
+                                </div>
+                                <div style="color:var(--success); font-weight:900; font-size:20px;">12%</div>
+                            </div>
+                        </div>
+                        <div class="level-card" style="border-right-color: var(--gold);">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <div style="font-weight:bold;">المستوى B (الثاني)</div>
+                                    <div style="font-size:11px; color:var(--text-dim);">أصدقاء المدعوين من قبلك</div>
+                                </div>
+                                <div style="color:var(--gold); font-weight:900; font-size:20px;">5%</div>
+                            </div>
+                        </div>
+                        <div class="level-card" style="border-right-color: #6366f1;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <div style="font-weight:bold;">المستوى C (الثالث)</div>
+                                    <div style="font-size:11px; color:var(--text-dim);">الجيل الثالث من فريقك</div>
+                                </div>
+                                <div style="color:#6366f1; font-weight:900; font-size:20px;">2%</div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="background:rgba(16, 185, 129, 0.1); border-color: var(--success); text-align:center;">
+                            <p style="font-size:11px; margin:0;">تتم إضافة العمولات فورياً إلى رصيدك القابل للسحب بمجرد قيام أي عضو في فريقك بشحن حسابه.</p>
+                        </div>
+                    </div>`;
+            }
+            else if(page === 'me') {
+                cont.innerHTML = `
+                    <div class="fade-in">
+                        <div class="card" style="margin:15px; background: linear-gradient(45deg, #111, #1a1a1a); border-radius:25px;">
+                            <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
+                                <div style="width:60px; height:60px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:25px;"><i class="fa-solid fa-user-tie"></i></div>
+                                <div><div style="font-weight:bold;">User_99283 <span class="vip-badge">NEW</span></div><div style="font-size:11px; color:var(--text-dim);">ID: 883902110</div></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                                <div><div style="font-size:10px; color:var(--text-dim);">رصيد الحساب</div><div style="font-size:18px; font-weight:900;">${currentBalance.toFixed(2)} <span style="font-size:12px;">USDT</span></div></div>
+                                <div><div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div><div style="font-size:18px; font-weight:900; color:var(--success);">0.00</div></div>
+                            </div>
+                        </div>
+                        <div style="margin:15px;">
+                            <div class="card" style="padding:5px 15px;">
+                                <div class="menu-item" onclick="showHistory()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i> <span style="flex:1; font-size:13px;">سجل الشحن والسحب</span> <i class="fa-solid fa-chevron-left" style="font-size:10px; opacity:0.3;"></i></div>
+                                <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--accent);"></i> <span style="flex:1; font-size:13px;">سحب الأرباح</span> <i class="fa-solid fa-chevron-left" style="font-size:10px; opacity:0.3;"></i></div>
+                                <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:12px; padding:15px 0; color:var(--danger); cursor:pointer;"><i class="fa-solid fa-power-off"></i> <span style="flex:1; font-size:13px;">تسجيل الخروج</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+            } else if(page === 'task') {
+                cont.innerHTML = `<div class="fade-in" style="padding: 20px;"><div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);"><div style="color:var(--text-dim); font-size:12px;">مؤقت تجديد المهام</div><div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div></div><div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid var(--success); background: linear-gradient(to left, #050505, #121212);"><div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chart-line" style="color:var(--success);"></i></div><div style="flex:1;"><h4 style="margin:0;">خوارزمية الربح القصوى</h4><div style="color:var(--success); font-weight:bold; font-size:14px;">+ 65.00 USDT</div></div><button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button></div></div>`;
+                startTimer();
+            } else if(page === 'vip') {
+                let vips = [{l:'SPECIAL', p:55, d:65.0},{l:1, p:10, d:2.5},{l:2, p:20, d:5.0},{l:3, p:30, d:7.5}];
+                let html = `<div class="fade-in" style="padding:20px;"><h3>مستويات التعدين</h3>`;
+                vips.forEach(v => {
+                    html += `<div class="card fade-in" style="position:relative; overflow:hidden; border: 1px solid ${v.l==='SPECIAL'?'var(--success)':'var(--border)'}"><div style="display:flex; justify-content:space-between; align-items:center;"><div><h4 style="margin:0;">LEVEL VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:5px;">سعر الاشتراك: ${v.p} USDT</div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:bold;">${v.d} USDT</div><div style="font-size:10px; color:var(--text-dim);">ربح يومي</div></div></div><button class="btn-main" style="margin-top:15px; background: ${v.l==='SPECIAL'?'var(--success)':'#222'}" onclick="openDeposit()">${v.l==='SPECIAL'?'ترقية الآن':'قفل المخطط'}</button></div>`;
+                });
+                cont.innerHTML = html + `</div>`;
+            }
+        }
+
+        function openDeposit() { document.getElementById('deposit-modal').classList.remove('hidden'); }
+        function openWithdraw() { document.getElementById('with-bal').innerText = currentBalance.toFixed(2); document.getElementById('withdraw-modal').classList.remove('hidden'); }
+        function closeModals() { document.querySelectorAll('.overlay').forEach(m => m.classList.add('hidden')); }
+        function switchWallet(type) {
+            document.getElementById('btn-trc').style.background = (type === 'TRC') ? 'var(--accent)' : '#222';
+            document.getElementById('btn-bnb').style.background = (type === 'BNB') ? 'var(--accent)' : '#222';
+            document.getElementById('addr-text').innerText = wallets[type];
+        }
+        function doTask() {
+            showToast("جاري المعالجة...");
+            setTimeout(() => { alert("يجب تفعيل المستوى المخصص أولاً."); openDeposit(); }, 1500);
+        }
+        function startTimer() {
+            setInterval(() => {
+                const t = document.getElementById('timer'); if(!t) return;
+                const now = new Date();
+                const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
+                t.innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+            }, 1000);
+        }
+        function renderInvestors() {
+            const list = document.getElementById('investor-list'); if(!list) return;
+            const names = ['Khalid', 'Samy_2', 'Mona_T', 'CryptoPro', 'Ali99'];
+            let h = "";
+            for(let i=0; i<6; i++) {
+                const n = names[Math.floor(Math.random()*names.length)];
+                const a = (Math.random()*200 + 5).toFixed(2);
+                h += `<div class="card fade-in" style="margin-bottom:8px; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; background:#0a0a0a;"><div style="font-size:12px;"><i class="fa-solid fa-circle-user" style="margin-left:8px; color:#444;"></i> ${n}****</div><div style="color:var(--gold); font-size:12px; font-weight:bold;">+ ${a} USDT</div></div>`;
+            }
+            list.innerHTML = h;
+        }
+        function openTelegram() { window.open('https://t.me/NEWMONTServer_bot', '_blank'); }
+        function logout() { localStorage.clear(); location.reload(); }
+        window.onload = () => { if(localStorage.getItem('logged')) { document.getElementById('login-page').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); navTo('home'); } };
+    </script>
+</body>
+</html>
