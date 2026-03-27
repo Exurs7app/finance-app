@@ -2,8 +2,23 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NEWMONT - Ultra Edition Pro</title>
+    
+    <!-- إعدادات الأيقونة وظهور التطبيق على الشاشة الرئيسية -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NEWMONT">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#050505">
+    
+    <!-- رابط الأيقونة (صورة الجوهرة الذهبية) -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2150/2150150.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2150/2150150.png">
+    
+    <!-- ملف الهوية للمتصفحات (Manifest) مدمج -->
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22NEWMONT%20PRO%22,%22short_name%22:%22NEWMONT%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23050505%22,%22theme_color%22:%22%238b5cf6%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/2150/2150150.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { 
@@ -19,12 +34,13 @@
             --tg-blue: #24A1DE;
         }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; background: var(--bg); color: white; direction: rtl; 
             overflow-x: hidden; scroll-behavior: smooth;
+            user-select: none;
         }
 
         .hidden { display: none !important; }
@@ -36,7 +52,7 @@
         #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1b4b, #050505); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-container { width: 100%; max-width: 380px; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
         
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px; z-index: 11000; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent-light); }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px; z-index: 11000; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent-light); text-align: center; min-width: 200px; }
 
         .header { background: rgba(5, 5, 5, 0.8); padding: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
         .nav { position: fixed; bottom: 0; width: 100%; background: rgba(10, 10, 10, 0.95); display: flex; justify-content: space-around; padding: 10px 0 28px; border-top: 1px solid var(--border); z-index: 90; }
@@ -61,26 +77,23 @@
         .close-modal { position: absolute; top: 15px; left: 15px; color: var(--text-dim); font-size: 20px; cursor: pointer; padding: 5px; }
 
         .input-box { background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; width: 100%; color: white; margin-bottom: 12px; outline: none; font-size: 14px; }
-        .network-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-        .net-btn { background: #1a1a1a; border: 1px solid var(--border); color: var(--text-dim); padding: 8px; border-radius: 10px; font-size: 11px; cursor: pointer; transition: 0.3s; }
-        .net-btn.active { border-color: var(--accent); color: white; background: rgba(139, 92, 246, 0.1); }
-
-        .live-dot { height: 8px; width: 8px; background: var(--success); border-radius: 50%; display: inline-block; margin-left: 5px; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-
-        .history-item { border-bottom: 1px solid #1a1a1a; padding: 12px 0; display: flex; justify-content: space-between; align-items: center; }
-        .status-pending { color: var(--gold); font-size: 10px; }
-        .status-success { color: var(--success); font-size: 10px; }
-
-        /* ستايل إضافي لصفحة الفريق */
+        .input-box:focus { border-color: var(--accent); }
+        
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 15px; text-align: center; }
-        .level-card { background: #1a1a1a; border-radius: 15px; padding: 15px; margin-bottom: 10px; border-right: 4px solid var(--accent); }
+
+        .history-card { background: #0a0a0a; border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .hist-info { display: flex; flex-direction: column; gap: 4px; }
+        .hist-type { font-size: 14px; font-weight: bold; }
+        .hist-date { font-size: 10px; color: var(--text-dim); }
+        .hist-status { font-size: 9px; padding: 2px 8px; border-radius: 5px; width: fit-content; margin-top: 5px; }
+        .hist-amount-box { text-align: left; }
+        .hist-amount { font-weight: 900; font-size: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="toast">تم النسخ بنجاح ✅</div>
+    <div id="toast"></div>
 
     <!-- تسجيل الدخول -->
     <div id="login-page">
@@ -92,8 +105,8 @@
             </div>
             <div class="input-group" style="margin-bottom: 15px;">
                 <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; gap: 10px;">
-                    <i class="fa-solid fa-user" style="color: var(--accent);"></i>
-                    <input type="text" id="login-email" placeholder="اسم المستخدم أو البريد" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                    <i class="fa-solid fa-envelope" style="color: var(--accent);"></i>
+                    <input type="email" id="login-email" placeholder="البريد الإلكتروني" style="background: none; border: none; color: white; outline: none; width: 100%;">
                 </div>
             </div>
             <div class="input-group" style="margin-bottom: 25px;">
@@ -111,7 +124,7 @@
         <header class="header">
             <div onclick="openTelegram()" style="cursor:pointer;"><i class="fa-brands fa-telegram" style="color: var(--tg-blue); font-size: 22px;"></i></div>
             <div style="font-weight: 900; letter-spacing: 2px; font-size: 18px;">NEWMONT <span style="color: var(--accent);">PRO</span></div>
-            <div onclick="openNotifications()" style="cursor:pointer; position: relative;">
+            <div onclick="navTo('me')" style="cursor:pointer; position: relative;">
                 <i class="fa-solid fa-bell"></i>
                 <span style="position: absolute; top: -5px; right: -5px; background: var(--danger); width: 8px; height: 8px; border-radius: 50%;"></span>
             </div>
@@ -128,7 +141,7 @@
         </nav>
     </div>
 
-    <!-- نافذة الإيداع -->
+    <!-- نوافذ Modal -->
     <div id="deposit-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
@@ -143,7 +156,6 @@
         </div>
     </div>
 
-    <!-- نافذة السحب -->
     <div id="withdraw-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
@@ -155,38 +167,119 @@
         </div>
     </div>
 
-    <script>
-        const wallets = { 'TRC': 'TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo', 'BNB': '0xa70850a7d21f63daf498d1a1885692bdda8b1cde' };
-        let currentBalance = 0.00;
-        let selectedNetwork = 'TRC20';
+    <div id="history-modal" class="overlay hidden">
+        <div class="modal" style="max-width: 450px;">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 15px;">سجل المعاملات</h3>
+            <div id="history-list" style="margin-top:20px;"></div>
+        </div>
+    </div>
 
-        function showToast(msg) {
+    <script>
+        // --- الإعدادات والبيانات ---
+        let currentBalance = 0.00;
+        let totalWithdrawn = 0.00;
+        let transactions = [];
+        const wallets = { 
+            'TRC': 'TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo', 
+            'BNB': '0xa70850a7d21f63daf498d1a1885692bdda8b1cde' 
+        };
+        const sessionInviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
+
+        function showToast(msg, color = "#8b5cf6") {
             const t = document.getElementById('toast');
-            t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 2000);
+            t.style.background = color;
+            t.innerText = msg; 
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2500);
         }
 
         function copyAddr(txt) {
             const target = txt || document.getElementById('addr-text').innerText;
-            navigator.clipboard.writeText(target);
-            showToast("تم النسخ بنجاح ✅");
+            navigator.clipboard.writeText(target).then(() => { showToast("تم النسخ بنجاح ✅", "#10b981"); });
         }
 
+        // --- نظام التحقق (Validation) ---
         function handleLogin() {
-            const e = document.getElementById('login-email').value;
-            const p = document.getElementById('login-pass').value;
-            if(e && p) {
-                localStorage.setItem('logged', 'true');
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            
+            if (!email || !pass) {
+                showToast("⚠️ يرجى إدخال البريد وكلمة المرور", "#ef4444");
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast("❌ صيغة البريد الإلكتروني غير صالحة", "#ef4444");
+                return;
+            }
+
+            if (pass.length < 6) {
+                showToast("❌ كلمة المرور يجب أن تكون 6 رموز فأكثر", "#ef4444");
+                return;
+            }
+
+            localStorage.setItem('logged', 'true');
+            showToast("تم تسجيل الدخول بنجاح 🔓", "#10b981");
+            setTimeout(() => {
                 document.getElementById('login-page').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 navTo('home');
-            } else { showToast("يرجى إدخال البيانات"); }
+            }, 800);
         }
 
+        function handleWithdraw() {
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const address = document.getElementById('withdraw-addr').value.trim();
+
+            if (isNaN(amount) || amount < 2) {
+                showToast("❌ الحد الأدنى للسحب هو 2 USDT", "#ef4444");
+                return;
+            }
+
+            if (amount > currentBalance) {
+                showToast("❌ عذراً، رصيدك غير كافٍ", "#ef4444");
+                return;
+            }
+
+            if (address.length < 20) {
+                showToast("❌ عنوان المحفظة غير صحيح", "#ef4444");
+                return;
+            }
+
+            currentBalance -= amount;
+            totalWithdrawn += amount;
+            transactions.unshift({
+                type: 'سحب أرباح',
+                date: new Date().toLocaleString('ar-EG'),
+                status: 'قيد المراجعة',
+                color: '#f59e0b',
+                amount: `-${amount.toFixed(2)}`
+            });
+
+            showToast("✅ تم إرسال طلب السحب بنجاح", "#10b981");
+            closeModals();
+            navTo('me');
+        }
+
+        function confirmDepositAction() {
+            showToast("⏳ جاري مراجعة عملية الإيداع...", "#f59e0b");
+            setTimeout(() => {
+                alert("سيتم إضافة الرصيد إلى حسابك فور تأكيده على الشبكة.");
+                closeModals();
+            }, 1000);
+        }
+
+        // --- التنقل والوظائف الأخرى ---
         function navTo(page) {
             const cont = document.getElementById('main-content');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('n-'+page).classList.add('active');
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(n => n.classList.remove('active'));
+            
+            const activeNav = document.getElementById('n-' + page);
+            if(activeNav) activeNav.classList.add('active');
+            
             window.scrollTo(0,0);
 
             if(page === 'home') {
@@ -202,156 +295,154 @@
                             <div onclick="navTo('team')" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-gift" style="color:var(--gold); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">مكافأة</div></div>
                             <div onclick="openTelegram()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-brands fa-telegram" style="color:var(--tg-blue); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">دعم</div></div>
                         </div>
-                        <div style="padding: 15px;"><h3 style="margin:0 0 15px; font-size:16px;"><span class="live-dot"></span> سحوبات مباشرة</h3><div id="investor-list"></div></div>
+                        <div style="padding: 15px;"><h3 style="margin:0 0 15px; font-size:16px;">سحوبات مباشرة</h3><div id="investor-list"></div></div>
                     </div>`;
                 renderInvestors();
             } 
-            else if(page === 'team') {
-                const inviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
-                const inviteLink = window.location.origin + "/reg?code=" + inviteCode;
-                
-                cont.innerHTML = `
-                    <div class="fade-in" style="padding:20px;">
-                        <h3 style="margin-top:0;">مركز الفريق والمكافآت</h3>
-                        
-                        <!-- إحصائيات الفريق -->
-                        <div class="stat-grid">
-                            <div class="stat-box">
-                                <div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div>
-                                <div style="font-size:18px; font-weight:900; color:var(--accent);">0</div>
-                            </div>
-                            <div class="stat-box">
-                                <div style="font-size:10px; color:var(--text-dim);">إجمالي الشحن</div>
-                                <div style="font-size:18px; font-weight:900; color:var(--success);">0.00</div>
-                            </div>
-                            <div class="stat-box">
-                                <div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div>
-                                <div style="font-size:18px; font-weight:900; color:var(--danger);">0.00</div>
-                            </div>
-                            <div class="stat-box">
-                                <div style="font-size:10px; color:var(--text-dim);">أرباح الفريق</div>
-                                <div style="font-size:18px; font-weight:900; color:var(--gold);">0.00</div>
-                            </div>
-                        </div>
-
-                        <!-- كود الدعوة ورابط المشاركة -->
-                        <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #121212); border-color: var(--accent);">
-                            <p style="font-size:12px; color:var(--text-dim); margin-bottom:10px;">كود الدعوة الخاص بك:</p>
-                            <div style="display:flex; gap:10px; align-items:center; margin-bottom:15px;">
-                                <div style="flex:1; background:#000; padding:12px; border-radius:10px; font-weight:bold; letter-spacing:2px; text-align:center; border:1px solid var(--border);">${inviteCode}</div>
-                                <button onclick="copyAddr('${inviteCode}')" style="background:var(--accent); border:none; color:white; padding:12px 20px; border-radius:10px;"><i class="fa-solid fa-copy"></i></button>
-                            </div>
-                            
-                            <p style="font-size:12px; color:var(--text-dim); margin-bottom:10px;">رابط الدعوة المباشر:</p>
-                            <div style="display:flex; gap:10px; align-items:center;">
-                                <div style="flex:1; background:#000; padding:12px; border-radius:10px; font-size:10px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; border:1px solid var(--border); direction:ltr;">${inviteLink}</div>
-                                <button onclick="copyAddr('${inviteLink}')" style="background:var(--success); border:none; color:white; padding:12px 20px; border-radius:10px;"><i class="fa-solid fa-share-nodes"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- مستويات العمولة -->
-                        <h4 style="margin: 20px 0 10px;">تفاصيل المستويات</h4>
-                        <div class="level-card">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <div style="font-weight:bold;">المستوى A (الأول)</div>
-                                    <div style="font-size:11px; color:var(--text-dim);">العمولة المباشرة من الإيداع</div>
-                                </div>
-                                <div style="color:var(--success); font-weight:900; font-size:20px;">12%</div>
-                            </div>
-                        </div>
-                        <div class="level-card" style="border-right-color: var(--gold);">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <div style="font-weight:bold;">المستوى B (الثاني)</div>
-                                    <div style="font-size:11px; color:var(--text-dim);">أصدقاء المدعوين من قبلك</div>
-                                </div>
-                                <div style="color:var(--gold); font-weight:900; font-size:20px;">5%</div>
-                            </div>
-                        </div>
-                        <div class="level-card" style="border-right-color: #6366f1;">
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <div style="font-weight:bold;">المستوى C (الثالث)</div>
-                                    <div style="font-size:11px; color:var(--text-dim);">الجيل الثالث من فريقك</div>
-                                </div>
-                                <div style="color:#6366f1; font-weight:900; font-size:20px;">2%</div>
-                            </div>
-                        </div>
-
-                        <div class="card" style="background:rgba(16, 185, 129, 0.1); border-color: var(--success); text-align:center;">
-                            <p style="font-size:11px; margin:0;">تتم إضافة العمولات فورياً إلى رصيدك القابل للسحب بمجرد قيام أي عضو في فريقك بشحن حسابه.</p>
-                        </div>
-                    </div>`;
-            }
             else if(page === 'me') {
                 cont.innerHTML = `
                     <div class="fade-in">
                         <div class="card" style="margin:15px; background: linear-gradient(45deg, #111, #1a1a1a); border-radius:25px;">
                             <div style="display:flex; align-items:center; gap:15px; margin-bottom:20px;">
                                 <div style="width:60px; height:60px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:25px;"><i class="fa-solid fa-user-tie"></i></div>
-                                <div><div style="font-weight:bold;">User_99283 <span class="vip-badge">NEW</span></div><div style="font-size:11px; color:var(--text-dim);">ID: 883902110</div></div>
+                                <div><div style="font-weight:bold;">User_Member <span class="vip-badge">VIP 0</span></div><div style="font-size:11px; color:var(--text-dim);">ID: ${Math.floor(Math.random()*900000)}</div></div>
                             </div>
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
                                 <div><div style="font-size:10px; color:var(--text-dim);">رصيد الحساب</div><div style="font-size:18px; font-weight:900;">${currentBalance.toFixed(2)} <span style="font-size:12px;">USDT</span></div></div>
-                                <div><div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div><div style="font-size:18px; font-weight:900; color:var(--success);">0.00</div></div>
+                                <div><div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div><div style="font-size:18px; font-weight:900; color:var(--success);">${totalWithdrawn.toFixed(2)}</div></div>
                             </div>
                         </div>
                         <div style="margin:15px;">
                             <div class="card" style="padding:5px 15px;">
-                                <div class="menu-item" onclick="showHistory()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i> <span style="flex:1; font-size:13px;">سجل الشحن والسحب</span> <i class="fa-solid fa-chevron-left" style="font-size:10px; opacity:0.3;"></i></div>
+                                <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold);"></i> <span style="flex:1; font-size:13px;">سجل الشحن والسحب</span> <i class="fa-solid fa-chevron-left" style="font-size:10px; opacity:0.3;"></i></div>
                                 <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--accent);"></i> <span style="flex:1; font-size:13px;">سحب الأرباح</span> <i class="fa-solid fa-chevron-left" style="font-size:10px; opacity:0.3;"></i></div>
                                 <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:12px; padding:15px 0; color:var(--danger); cursor:pointer;"><i class="fa-solid fa-power-off"></i> <span style="flex:1; font-size:13px;">تسجيل الخروج</span></div>
                             </div>
                         </div>
                     </div>`;
             } else if(page === 'task') {
-                cont.innerHTML = `<div class="fade-in" style="padding: 20px;"><div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);"><div style="color:var(--text-dim); font-size:12px;">مؤقت تجديد المهام</div><div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div></div><div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid var(--success); background: linear-gradient(to left, #050505, #121212);"><div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chart-line" style="color:var(--success);"></i></div><div style="flex:1;"><h4 style="margin:0;">خوارزمية الربح القصوى</h4><div style="color:var(--success); font-weight:bold; font-size:14px;">+ 65.00 USDT</div></div><button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button></div></div>`;
+                cont.innerHTML = `<div class="fade-in" style="padding: 20px;"><div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);"><div style="color:var(--text-dim); font-size:12px;">مؤقت تجديد المهام</div><div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div></div><div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid var(--success);"><div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chart-line" style="color:var(--success);"></i></div><div style="flex:1;"><h4 style="margin:0;">خوارزمية التعدين</h4><div style="color:var(--success); font-weight:bold; font-size:14px;">+ 65.00 USDT</div></div><button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button></div></div>`;
                 startTimer();
             } else if(page === 'vip') {
-                let vips = [{l:'SPECIAL', p:55, d:65.0},{l:1, p:10, d:2.5},{l:2, p:20, d:5.0},{l:3, p:30, d:7.5}];
-                let html = `<div class="fade-in" style="padding:20px;"><h3>مستويات التعدين</h3>`;
+                let vips = [{l:'SPECIAL', p:55, d:65.0},{l:1, p:10, d:2.5},{l:2, p:20, d:5.0}];
+                let html = `<div class="fade-in" style="padding:20px;"><h3>مستويات VIP</h3>`;
                 vips.forEach(v => {
-                    html += `<div class="card fade-in" style="position:relative; overflow:hidden; border: 1px solid ${v.l==='SPECIAL'?'var(--success)':'var(--border)'}"><div style="display:flex; justify-content:space-between; align-items:center;"><div><h4 style="margin:0;">LEVEL VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:5px;">سعر الاشتراك: ${v.p} USDT</div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:bold;">${v.d} USDT</div><div style="font-size:10px; color:var(--text-dim);">ربح يومي</div></div></div><button class="btn-main" style="margin-top:15px; background: ${v.l==='SPECIAL'?'var(--success)':'#222'}" onclick="openDeposit()">${v.l==='SPECIAL'?'ترقية الآن':'قفل المخطط'}</button></div>`;
+                    html += `<div class="card fade-in" style="border: 1px solid ${v.l==='SPECIAL'?'var(--success)':'var(--border)'}"><div style="display:flex; justify-content:space-between; align-items:center;"><div><h4>VIP ${v.l}</h4><div style="font-size:11px; color:var(--text-dim);">السعر: ${v.p} USDT</div></div><div><div style="color:var(--success); font-weight:bold;">${v.d} USDT</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px;" onclick="openDeposit()">اشترك الآن</button></div>`;
                 });
                 cont.innerHTML = html + `</div>`;
+            } else if(page === 'team') {
+                cont.innerHTML = `
+                <div class="fade-in" style="padding:20px;">
+                    <h3>نظام المكافآت</h3>
+                    <div class="stat-grid">
+                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div><div style="font-weight:bold; font-size:18px;">0</div></div>
+                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">إجمالي العمولة</div><div style="font-weight:bold; color:var(--success); font-size:18px;">0.00</div></div>
+                    </div>
+                    
+                    <div class="card">
+                        <div style="font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-link" style="color:var(--accent);"></i> رابط الدعوة الخاص بك:</div>
+                        <div class="addr-display" onclick="copyAddr('https://newmont-pro.com/register?ref=${sessionInviteCode}')" style="margin:5px 0;">https://newmont-pro.com/reg...${sessionInviteCode}</div>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <div style="flex:1;">
+                                <div style="font-size:11px; color:var(--text-dim);">كود الدعوة:</div>
+                                <div style="background:#000; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border:1px solid var(--border);">${sessionInviteCode}</div>
+                            </div>
+                            <button class="btn-main" style="width:100px; height:45px; align-self:flex-end;" onclick="copyAddr('${sessionInviteCode}')">نسخ</button>
+                        </div>
+                    </div>
+
+                    <h4 style="margin:20px 0 10px;"><i class="fa-solid fa-layer-group" style="color:var(--gold);"></i> مستويات الربح</h4>
+                    <div class="card" style="padding:0; overflow:hidden;">
+                        <div style="padding:15px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center;">
+                            <span>المستوى A (مباشر)</span>
+                            <span style="color:var(--success); font-weight:bold;">15%</span>
+                        </div>
+                        <div style="padding:15px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between; align-items:center;">
+                            <span>المستوى B</span>
+                            <span style="color:var(--accent); font-weight:bold;">3%</span>
+                        </div>
+                        <div style="padding:15px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>المستوى C</span>
+                            <span style="color:var(--gold); font-weight:bold;">2%</span>
+                        </div>
+                    </div>
+                </div>`;
             }
         }
 
+        function openHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = transactions.length === 0 ? `<div style="text-align:center; color:var(--text-dim); margin-top:30px;">لا توجد معاملات بعد</div>` : "";
+            transactions.forEach(t => {
+                list.innerHTML += `
+                    <div class="history-card fade-in">
+                        <div class="hist-info">
+                            <div class="hist-type">${t.type}</div>
+                            <div class="hist-date">${t.date}</div>
+                            <div class="hist-status" style="background:${t.color}22; color:${t.color}; border:1px solid ${t.color}55;">${t.status}</div>
+                        </div>
+                        <div class="hist-amount-box">
+                            <div class="hist-amount" style="color:${t.amount.includes('+') ? 'var(--success)' : 'var(--danger)'}">${t.amount}</div>
+                            <div style="font-size:10px; color:var(--text-dim);">USDT</div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('history-modal').classList.remove('hidden');
+        }
+
         function openDeposit() { document.getElementById('deposit-modal').classList.remove('hidden'); }
-        function openWithdraw() { document.getElementById('with-bal').innerText = currentBalance.toFixed(2); document.getElementById('withdraw-modal').classList.remove('hidden'); }
+        function openWithdraw() { 
+            document.getElementById('with-bal').innerText = currentBalance.toFixed(2); 
+            document.getElementById('withdraw-modal').classList.remove('hidden'); 
+        }
         function closeModals() { document.querySelectorAll('.overlay').forEach(m => m.classList.add('hidden')); }
+        
         function switchWallet(type) {
             document.getElementById('btn-trc').style.background = (type === 'TRC') ? 'var(--accent)' : '#222';
             document.getElementById('btn-bnb').style.background = (type === 'BNB') ? 'var(--accent)' : '#222';
             document.getElementById('addr-text').innerText = wallets[type];
         }
+
         function doTask() {
-            showToast("جاري المعالجة...");
-            setTimeout(() => { alert("يجب تفعيل المستوى المخصص أولاً."); openDeposit(); }, 1500);
+            showToast("⏳ جاري تحليل البيانات...", "#8b5cf6");
+            setTimeout(() => { 
+                showToast("❌ خطأ: لم يتم تفعيل باقة التعدين", "#ef4444");
+                setTimeout(openDeposit, 800);
+            }, 1200);
         }
+
         function startTimer() {
-            setInterval(() => {
-                const t = document.getElementById('timer'); if(!t) return;
+            const timerInterval = setInterval(() => {
+                const t = document.getElementById('timer'); 
+                if(!t) { clearInterval(timerInterval); return; }
                 const now = new Date();
                 const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
                 t.innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
             }, 1000);
         }
+
         function renderInvestors() {
             const list = document.getElementById('investor-list'); if(!list) return;
             const names = ['Khalid', 'Samy_2', 'Mona_T', 'CryptoPro', 'Ali99'];
             let h = "";
-            for(let i=0; i<6; i++) {
+            for(let i=0; i<5; i++) {
                 const n = names[Math.floor(Math.random()*names.length)];
-                const a = (Math.random()*200 + 5).toFixed(2);
-                h += `<div class="card fade-in" style="margin-bottom:8px; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; background:#0a0a0a;"><div style="font-size:12px;"><i class="fa-solid fa-circle-user" style="margin-left:8px; color:#444;"></i> ${n}****</div><div style="color:var(--gold); font-size:12px; font-weight:bold;">+ ${a} USDT</div></div>`;
+                const a = (Math.random()*100 + 5).toFixed(2);
+                h += `<div class="card" style="margin-bottom:8px; padding:10px; display:flex; justify-content:space-between; background:#0a0a0a; border:1px solid #1a1a1a; font-size:12px;"><span>${n}****</span><span style="color:var(--gold);">+ ${a} USDT</span></div>`;
             }
             list.innerHTML = h;
         }
+
         function openTelegram() { window.open('https://t.me/NEWMONTServer_bot', '_blank'); }
         function logout() { localStorage.clear(); location.reload(); }
-        window.onload = () => { if(localStorage.getItem('logged')) { document.getElementById('login-page').classList.add('hidden'); document.getElementById('app').classList.remove('hidden'); navTo('home'); } };
+
+        window.onload = () => { 
+            if(localStorage.getItem('logged')) { 
+                document.getElementById('login-page').classList.add('hidden'); 
+                document.getElementById('app').classList.remove('hidden'); 
+                navTo('home'); 
+            } 
+        };
     </script>
 </body>
 </html>
