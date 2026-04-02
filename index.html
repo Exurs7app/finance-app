@@ -103,7 +103,6 @@
         .progress-bar-wrap { background: #000; height: 6px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
         .progress-bar-fill { background: var(--accent); height: 100%; width: 5%; border-radius: 10px; }
 
-        /* Notification Styling */
         .notif-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
         .notif-title { color: var(--accent); font-weight: bold; font-size: 14px; margin-bottom: 5px; display: block; }
         .notif-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
@@ -196,7 +195,7 @@
             </div>
             
             <div class="dep-step"><i class="fa-solid fa-2"></i> انسخ عنوان المحفظة وقم بإتمام التحويل:</div>
-            <div class="addr-display" id="addr-text" onclick="copyOnly(this.innerText)">TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo</div>
+            <div class="addr-display" id="addr-text" onclick="copyOnly(this.innerText)">TBQZifkessRrrSYuieQuJCDGXdsKotHibQ</div>
             
             <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px;">
                 <div style="font-size: 11px; color: var(--gold); display: flex; align-items: center; gap: 8px;">
@@ -268,15 +267,38 @@
         let totalWithdrawn = 0.00;
         let totalDeposited = 0.00;
         let todayEarned = 0.00;
-        let tasksDone = 0;
         let transactions = [];
         let investorInterval;
         let selectedWithdrawNet = 'TRC';
         const wallets = { 
-            'TRC': 'TD7E5roEGQq4gS3N6L1abw5BW2E6qodCqo', 
+            'TRC': 'TBQZifkessRrrSYuieQuJCDGXdsKotHibQ', 
             'BNB': '0xa70850a7d21f63daf498d1a1885692bdda8b1cde' 
         };
         const sessionInviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
+
+        // وظيفة الحصول على المعرف الرقمي الثابت
+        function getPersistentUserID() {
+            let userID = localStorage.getItem('newmont_user_id');
+            if (!userID) {
+                userID = "NM" + Math.floor(100000 + Math.random() * 900000);
+                localStorage.setItem('newmont_user_id', userID);
+            }
+            return userID;
+        }
+
+        const vipsData = [
+            {l:'SPECIAL EDITION', p:55, d:65.0, icon:'fa-crown', color:'var(--success)'},
+            {l:1, p:10, d:2.5, icon:'fa-gem', color:'var(--border)'},
+            {l:2, p:30, d:7.5, icon:'fa-gem', color:'var(--border)'},
+            {l:3, p:100, d:28.0, icon:'fa-gem', color:'var(--border)'},
+            {l:4, p:250, d:75.0, icon:'fa-gem', color:'var(--border)'},
+            {l:5, p:600, d:185.0, icon:'fa-gem', color:'var(--border)'},
+            {l:6, p:1200, d:380.0, icon:'fa-gem', color:'var(--border)'},
+            {l:7, p:2500, d:820.0, icon:'fa-gem', color:'var(--border)'},
+            {l:8, p:5000, d:1750.0, icon:'fa-gem', color:'var(--border)'},
+            {l:9, p:10000, d:3600.0, icon:'fa-gem', color:'var(--border)'},
+            {l:10, p:20000, d:7500.0, icon:'fa-gem', color:'var(--border)'}
+        ];
 
         function showToast(msg, color = "#8b5cf6") {
             const t = document.getElementById('toast');
@@ -291,10 +313,27 @@
         }
 
         function handleLogin() {
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            if (!email || !pass) { showToast("⚠️ يرجى إدخل البيانات", "#ef4444"); return; }
+            const emailInput = document.getElementById('login-email').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailInput || !passInput) { 
+                showToast("⚠️ يرجى إدخال كافة البيانات", "#ef4444"); 
+                return; 
+            }
+
+            if (!emailPattern.test(emailInput)) {
+                showToast("❌ خطأ: تنسيق البريد الإلكتروني غير صحيح", "#ef4444");
+                return;
+            }
+
+            if (passInput.length < 4) {
+                showToast("❌ خطأ: كلمة المرور ضعيفة جداً", "#ef4444");
+                return;
+            }
+
             localStorage.setItem('logged', 'true');
+            localStorage.setItem('user_email', emailInput);
             showToast("تم تسجيل الدخول بنجاح 🔓", "#10b981");
             setTimeout(() => {
                 document.getElementById('login-page').classList.add('hidden');
@@ -399,28 +438,39 @@
                 </div>`;
             }
             else if(page === 'task') {
-                cont.innerHTML = `<div class="fade-in" style="padding: 20px;"><div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);"><div style="color:var(--text-dim); font-size:12px;">تجديد المهام</div><div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div></div><div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid var(--success);"><div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-chart-line" style="color:var(--success);"></i></div><div style="flex:1;"><h4 style="margin:0;">خوارزمية التعدين</h4><div style="color:var(--success); font-weight:bold; font-size:14px;">+ 65.00 USDT</div></div><button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button></div></div>`;
+                let taskHtml = `
+                <div class="fade-in" style="padding: 20px;">
+                    <div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);">
+                        <div style="color:var(--text-dim); font-size:12px;">تجديد المهام</div>
+                        <div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div>
+                    </div>`;
+
+                vipsData.forEach(v => {
+                    taskHtml += `
+                    <div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid ${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'};">
+                        <div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
+                            <i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'};"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h4 style="margin:0;">مهمة VIP ${v.l}</h4>
+                            <div style="color:var(--success); font-weight:bold; font-size:14px;">+ ${v.d.toFixed(2)} USDT</div>
+                        </div>
+                        <button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button>
+                    </div>`;
+                });
+
+                cont.innerHTML = taskHtml + `</div>`;
                 startTimer();
             } else if(page === 'vip') {
-                let vips = [
-                    {l:'SPECIAL EDITION', p:55, d:65.0, icon:'fa-crown', color:'var(--success)'},
-                    {l:1, p:10, d:2.5, icon:'fa-gem', color:'var(--border)'},
-                    {l:2, p:30, d:7.5, icon:'fa-gem', color:'var(--border)'},
-                    {l:3, p:100, d:28.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:4, p:250, d:75.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:5, p:600, d:185.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:6, p:1200, d:380.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:7, p:2500, d:820.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:8, p:5000, d:1750.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:9, p:10000, d:3600.0, icon:'fa-gem', color:'var(--border)'},
-                    {l:10, p:20000, d:7500.0, icon:'fa-gem', color:'var(--border)'}
-                ];
                 let html = `<div class="fade-in" style="padding:20px;"><h3>باقات VIP</h3>`;
-                vips.forEach(v => {
+                vipsData.forEach(v => {
                     html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${v.l==='SPECIAL EDITION' ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}" onclick="openDeposit()">فتح المستوى</button></div>`;
                 });
                 cont.innerHTML = html + `</div>`;
             } else if(page === 'me') {
+                const userEmail = localStorage.getItem('user_email') || 'User_Guest';
+                const persistentID = getPersistentUserID(); // استدعاء المعرف الثابت
+
                 cont.innerHTML = `
                 <div class="fade-in" style="padding-bottom: 30px;">
                     <div class="me-header-card">
@@ -430,10 +480,10 @@
                             </div>
                             <div style="flex:1;">
                                 <div style="display:flex; align-items:center; gap:8px;">
-                                    <div style="font-weight:bold; font-size:18px;">Premium_User</div>
+                                    <div style="font-weight:bold; font-size:14px; word-break:break-all;">${userEmail}</div>
                                     <span class="vip-badge">VIP 0</span>
                                 </div>
-                                <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">المعرف الرقمي: #NM${Math.floor(100000 + Math.random()*900000)}</div>
+                                <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">المعرف الرقمي: #${persistentID}</div>
                             </div>
                         </div>
                         <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
