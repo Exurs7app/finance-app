@@ -44,7 +44,9 @@
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
         @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        @keyframes borderGlowGreen { 0% { border-color: var(--success); } 50% { border-color: #34d399; } 100% { border-color: var(--success); } }
         
         .fade-in { animation: fadeInUp 0.5s ease forwards; }
 
@@ -71,6 +73,7 @@
         .btn-main { background: var(--accent); color: white; padding: 14px; border: none; border-radius: 14px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-main:active { transform: scale(0.96); opacity: 0.9; }
         .btn-pulse { animation: pulse 2s infinite; }
+        .btn-success-pulse { background: var(--success) !important; animation: pulseGreen 2s infinite !important; }
 
         .addr-display { background: #000; border: 1px dashed var(--accent); padding: 15px; border-radius: 12px; font-size: 12px; word-break: break-all; color: #fff; margin: 15px 0; cursor: pointer; position: relative; }
         .addr-display::after { content: '\f0c5'; font-family: 'Font Awesome 6 Free'; position: absolute; left: 10px; color: var(--accent); }
@@ -101,11 +104,33 @@
         .me-header-card { background: linear-gradient(135deg, #1e1b4b 0%, #0a0a0a 100%); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin: 15px; position: relative; overflow: hidden; }
         .me-header-card::before { content: ''; position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: var(--accent); filter: blur(100px); opacity: 0.2; }
         .progress-bar-wrap { background: #000; height: 6px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .progress-bar-fill { background: var(--accent); height: 100%; width: 5%; border-radius: 10px; }
+        .progress-bar-fill { background: var(--accent); height: 100%; width: 5%; border-radius: 10px; box-shadow: 0 0 10px var(--accent); }
 
-        .notif-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
-        .notif-title { color: var(--accent); font-weight: bold; font-size: 14px; margin-bottom: 5px; display: block; }
-        .notif-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+        .shield-indicator { font-size: 10px; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 3px 8px; border-radius: 50px; display: flex; align-items: center; gap: 4px; width: fit-content; }
+        
+        .detailed-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px; }
+        .d-stat-item { background: var(--card); border: 1px solid var(--border); padding: 10px 5px; border-radius: 15px; text-align: center; }
+        .d-stat-val { font-weight: 900; font-size: 14px; display: block; margin-bottom: 2px; }
+        .d-stat-lbl { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .featured-task-green {
+            border: 2px solid var(--success) !important;
+            animation: borderGlowGreen 3s infinite alternate !important;
+            background: linear-gradient(145deg, #0b2018, #121212) !important;
+            position: relative;
+        }
+        .task-badge-green {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: var(--success);
+            color: black;
+            font-size: 9px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -267,6 +292,7 @@
         let totalWithdrawn = 0.00;
         let totalDeposited = 0.00;
         let todayEarned = 0.00;
+        let totalProfit = 0.00;
         let transactions = [];
         let investorInterval;
         let selectedWithdrawNet = 'TRC';
@@ -276,7 +302,6 @@
         };
         const sessionInviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
 
-        // وظيفة الحصول على المعرف الرقمي الثابت
         function getPersistentUserID() {
             let userID = localStorage.getItem('newmont_user_id');
             if (!userID) {
@@ -445,17 +470,22 @@
                         <div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div>
                     </div>`;
 
-                vipsData.forEach(v => {
+                vipsData.forEach((v, index) => {
+                    const isSpecial = v.l === 'SPECIAL EDITION';
                     taskHtml += `
-                    <div class="card fade-in" style="display:flex; align-items:center; gap:15px; border-right: 4px solid ${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'};">
+                    <div class="card fade-in ${isSpecial ? 'featured-task-green' : ''}" style="display:flex; align-items:center; gap:15px; border-right: 4px solid ${isSpecial ? 'var(--success)' : 'var(--accent)'};">
+                        ${isSpecial ? '<div class="task-badge-green">مهمة عاجلة 🔥</div>' : ''}
                         <div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
-                            <i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'};"></i>
+                            <i class="fa-solid ${v.icon}" style="color:${isSpecial ? 'var(--success)' : 'var(--accent)'};"></i>
                         </div>
                         <div style="flex:1;">
-                            <h4 style="margin:0;">مهمة VIP ${v.l}</h4>
-                            <div style="color:var(--success); font-weight:bold; font-size:14px;">+ ${v.d.toFixed(2)} USDT</div>
+                            <h4 style="margin:0; font-size:${isSpecial ? '15px' : '14px'}">مهمة VIP ${v.l}</h4>
+                            <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
+                                <span style="font-size:10px; color:var(--text-dim);">السعر: ${v.p} USDT</span>
+                                <span style="color:var(--success); font-weight:900; font-size:${isSpecial ? '15px' : '13px'};">+ ${v.d.toFixed(2)} USDT</span>
+                            </div>
                         </div>
-                        <button class="btn-main" style="width:auto; padding:8px 20px;" onclick="doTask()">تنفيذ</button>
+                        <button class="btn-main ${isSpecial ? 'btn-success-pulse' : ''}" style="width:auto; padding:8px 18px; font-size: 12px;" onclick="doTask()">تنفيذ</button>
                     </div>`;
                 });
 
@@ -469,69 +499,114 @@
                 cont.innerHTML = html + `</div>`;
             } else if(page === 'me') {
                 const userEmail = localStorage.getItem('user_email') || 'User_Guest';
-                const persistentID = getPersistentUserID(); // استدعاء المعرف الثابت
+                const persistentID = getPersistentUserID();
 
                 cont.innerHTML = `
-                <div class="fade-in" style="padding-bottom: 30px;">
+                <div class="fade-in" style="padding-bottom: 40px;">
                     <div class="me-header-card">
-                        <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
-                            <div style="width:70px; height:70px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; border:3px solid rgba(255,255,255,0.1);">
-                                <i class="fa-solid fa-user-shield"></i>
+                        <div style="display:flex; align-items:center; gap:15px; margin-bottom:18px;">
+                            <div style="width:75px; height:75px; background:linear-gradient(45deg, var(--accent), #4f46e5); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; border:3px solid rgba(255,255,255,0.15); box-shadow: 0 0 25px rgba(139, 92, 246, 0.45); position: relative;">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                                <div style="position:absolute; bottom:0; right:0; background:var(--success); width:18px; height:18px; border-radius:50%; border:3px solid #0a0a0a;"></div>
                             </div>
                             <div style="flex:1;">
                                 <div style="display:flex; align-items:center; gap:8px;">
-                                    <div style="font-weight:bold; font-size:14px; word-break:break-all;">${userEmail}</div>
+                                    <div style="font-weight:bold; font-size:15px; word-break:break-all; letter-spacing:0.5px;">${userEmail}</div>
                                     <span class="vip-badge">VIP 0</span>
                                 </div>
-                                <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">المعرف الرقمي: #${persistentID}</div>
+                                <div style="font-size:11px; color:var(--text-dim); margin-top:5px; font-family:monospace;">ID: #${persistentID}</div>
+                                <div style="display:flex; gap:8px; margin-top:8px;">
+                                    <div class="shield-indicator"><i class="fa-solid fa-certificate"></i> موثق</div>
+                                    <div class="shield-indicator" style="background:rgba(139,92,246,0.1); color:var(--accent);"><i class="fa-solid fa-shield-check"></i> محمي</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
+                        <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-bottom:6px;">
+                            <span>مستوى الترقية (Exp)</span>
+                            <span>12% للوصول لـ VIP 1</span>
+                        </div>
+                        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 12%;"></div></div>
+                    </div>
+
+                    <div class="detailed-stats">
+                        <div class="d-stat-item">
+                            <span class="d-stat-val">0</span>
+                            <span class="d-stat-lbl">المهام المنجزة</span>
+                        </div>
+                        <div class="d-stat-item">
+                            <span class="d-stat-val" style="color:var(--success);">0.00</span>
+                            <span class="d-stat-lbl">دخل الفريق</span>
+                        </div>
+                        <div class="d-stat-item">
+                            <span class="d-stat-val" style="color:var(--gold);">0%</span>
+                            <span class="d-stat-lbl">معدل النمو</span>
+                        </div>
                     </div>
 
                     <div style="margin:0 15px;">
-                        <div class="card" style="padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:20px; border-bottom: 2px solid var(--accent);">
-                            <div style="border-left: 1px solid var(--border);">
-                                <div style="font-size:11px; color:var(--text-dim); margin-bottom:5px;">إجمالي الرصيد (USDT)</div>
-                                <div style="font-size:22px; font-weight:900; color:white;">${currentBalance.toFixed(2)}</div>
+                        <div class="card" style="padding:22px; border: 1px solid var(--border); background: linear-gradient(160deg, #161616 0%, #080808 100%); position: relative; overflow: hidden;">
+                            <div style="position:absolute; top: -20px; left: -20px; opacity: 0.05; font-size: 100px; color: white;"><i class="fa-solid fa-wallet"></i></div>
+                            
+                            <div style="text-align: center; margin-bottom: 20px; position: relative; z-index: 1;">
+                                <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; letter-spacing:2px; text-transform:uppercase;">إجمالي الرصيد المحاسبي</div>
+                                <div style="font-size:36px; font-weight:900; color:white; display:flex; align-items:center; justify-content:center; gap:10px;">
+                                    ${currentBalance.toFixed(2)} <span style="font-size:16px; color:var(--accent); font-weight: 400;">USDT</span>
+                                </div>
                             </div>
-                            <div style="padding-right:10px;">
-                                <div style="font-size:11px; color:var(--text-dim); margin-bottom:5px;">أرباح اليوم</div>
-                                <div style="font-size:22px; font-weight:900; color:var(--success);">+${todayEarned.toFixed(2)}</div>
+                            
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; border-top:1px solid #1f2937; padding-top:18px;">
+                                <div style="border-left: 1px solid #1f2937;">
+                                    <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">أرباح اليوم</div>
+                                    <div style="font-size:16px; font-weight:900; color:var(--success);">+${todayEarned.toFixed(2)}</div>
+                                </div>
+                                <div style="padding-right:10px;">
+                                    <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">الرصيد المجمد</div>
+                                    <div style="font-size:16px; font-weight:900; color:var(--danger);">0.00</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="margin:15px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <div class="stat-box" style="text-align:right;">
-                            <i class="fa-solid fa-arrow-down-long" style="color:var(--success); font-size:12px;"></i>
-                            <div style="font-size:10px; color:var(--text-dim);">إجمالي الإيداع</div>
-                            <div style="font-size:16px; font-weight:bold; margin-top:4px;">${totalDeposited.toFixed(2)}</div>
-                        </div>
-                        <div class="stat-box" style="text-align:right;">
-                            <i class="fa-solid fa-arrow-up-long" style="color:var(--danger); font-size:12px;"></i>
-                            <div style="font-size:10px; color:var(--text-dim);">إجمالي السحب</div>
-                            <div style="font-size:16px; font-weight:bold; margin-top:4px;">${totalWithdrawn.toFixed(2)}</div>
-                        </div>
-                    </div>
+                    <div style="margin:20px 15px;">
+                        <h4 style="font-size:13px; color:var(--text-dim); margin-bottom:12px; padding-right:5px; font-weight: 500;">مركز التحكم والأمان</h4>
+                        <div class="card" style="padding:0; overflow: hidden; background: #0a0a0a;">
+                            
+                            <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(245,158,11,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-receipt" style="color:var(--gold); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">سجل التدقيق المالي</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">كافة عمليات الإيداع والسحب والمهام</div>
+                                </div>
+                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
+                            </div>
 
-                    <div style="margin:15px;">
-                        <div class="card" style="padding:5px 15px;">
-                            <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;">
-                                <div style="width:30px; height:30px; background:rgba(245,158,11,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-clock-rotate-left" style="color:var(--gold); font-size:14px;"></i></div>
-                                <span style="flex:1; font-size:14px;">سجل المعاملات المالي</span>
+                            <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(139,92,246,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-credit-card" style="color:var(--accent); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">العناوين المربوطة</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">إدارة محافظ TRC20 و BEP20</div>
+                                </div>
                                 <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
                             </div>
-                            <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:12px; padding:15px 0; border-bottom:1px solid #1a1a1a; cursor:pointer;">
-                                <div style="width:30px; height:30px; background:rgba(139,92,246,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-wallet" style="color:var(--accent); font-size:14px;"></i></div>
-                                <span style="flex:1; font-size:14px;">إدارة عمليات السحب</span>
+
+                            <div class="menu-item" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(16,185,129,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-key" style="color:var(--success); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">كلمة مرور الصندوق</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">تأمين عمليات السحب بكلمة مرور ثانية</div>
+                                </div>
                                 <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
                             </div>
-                            <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:12px; padding:15px 0; color:var(--danger); cursor:pointer;">
-                                <div style="width:30px; height:30px; background:rgba(239,68,68,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-power-off" style="font-size:14px;"></i></div>
-                                <span style="flex:1; font-size:14px; font-weight:bold;">تسجيل الخروج الآمن</span>
+
+                            <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:15px; padding:18px; color:var(--danger); cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(239,68,68,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-right-from-bracket" style="font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:bold;">إنهاء الجلسة الآمن</div>
+                                    <div style="font-size:9px; color:rgba(239,68,68,0.6); margin-top:2px;">تسجيل خروج ومسح بيانات الجلسة</div>
+                                </div>
                             </div>
                         </div>
+                        <div style="text-align:center; font-size:10px; color:var(--text-dim); margin-top:20px; opacity:0.4; letter-spacing:1px;">NEWMONT PLATFORM v2.0.4 PRO EDITION</div>
                     </div>
                 </div>`;
             }
