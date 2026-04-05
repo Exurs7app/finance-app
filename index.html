@@ -702,4 +702,152 @@
                     </div>
                     <div style="margin:20px 15px;">
                         <h4 style="font-size:13px; color:var(--text-dim); margin-bottom:12px; padding-right:5px; font-weight: 500;">مركز التحكم والأمان</h4>
-                        <div class="card" style="padding:0; overflow: hidden; background:
+                        <div class="card" style="padding:0; overflow: hidden; background: #0a0a0a;">
+                            <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(245,158,11,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-receipt" style="color:var(--gold); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">سجل التدقيق المالي</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">كافة عمليات الإيداع والسحب والمهام</div>
+                                </div>
+                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
+                            </div>
+                            <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(139,92,246,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-credit-card" style="color:var(--accent); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">العناوين المربوطة</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">إدارة محافظ TRC20 و BEP20</div>
+                                </div>
+                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
+                            </div>
+                            <div class="menu-item" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(16,185,129,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-key" style="color:var(--success); font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:600;">كلمة مرور الصندوق</div>
+                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">تأمين عمليات السحب بكلمة مرور ثانية</div>
+                                </div>
+                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
+                            </div>
+                            <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:15px; padding:18px; color:var(--danger); cursor:pointer;">
+                                <div style="width:36px; height:36px; background:rgba(239,68,68,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-right-from-bracket" style="font-size:16px;"></i></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:14px; font-weight:bold;">إنهاء الجلسة الآمن</div>
+                                    <div style="font-size:9px; color:rgba(239,68,68,0.6); margin-top:2px;">تسجيل خروج ومسح بيانات الجلسة</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align:center; font-size:10px; color:var(--text-dim); margin-top:20px; opacity:0.4; letter-spacing:1px;">NEWMONT PLATFORM v2.0.4 PRO EDITION</div>
+                    </div>
+                </div>`;
+            }
+        }
+
+        function initTicker() {
+            const ticker = document.getElementById('live-ticker'); if(!ticker) return;
+            const users = ['Ahmed', 'Samy', 'Omer', 'Fatima', 'Vip_King', 'Sara', 'Khalid', 'Ali'];
+            let content = "";
+            for(let i=0; i<10; i++) {
+                const user = users[Math.floor(Math.random()*users.length)] + "****";
+                const amount = (Math.random()*150 + 5).toFixed(2);
+                const isDep = Math.random() > 0.5;
+                content += `<div class="ticker-item">المستثمر <span>${user}</span> قام بـ ${isDep?'إيداع':'سحب'} <span class="${isDep?'t-dep':'t-wit'}">${amount} USDT</span></div>`;
+            }
+            ticker.innerHTML = content + content;
+        }
+
+        function renderInvestors() {
+            const list = document.getElementById('investor-list'); if(!list) return;
+            const names = ['Khalid', 'Samy_2', 'Mona_T', 'CryptoPro', 'Ali99', 'Ahmed_V'];
+            let h = "";
+            for(let i=0; i<5; i++) {
+                const n = names[Math.floor(Math.random()*names.length)];
+                const a = (Math.random()*500 + 5).toFixed(2);
+                h += `<div class="card fade-in" style="margin-bottom:8px; padding:10px; display:flex; justify-content:space-between; background:#0a0a0a; border:1px solid #1a1a1a; font-size:12px;"><span>${n}****</span><span style="color:var(--gold); font-weight:bold;">+ ${a} USDT</span></div>`;
+            }
+            list.innerHTML = h;
+        }
+
+        function openHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = transactions.length === 0 ? `<div style="text-align:center; color:var(--text-dim); margin-top:30px;">لا يوجد سجلات</div>` : "";
+            transactions.forEach(t => {
+                list.innerHTML += `<div class="history-card fade-in"><div class="hist-info"><div class="hist-type">${t.type}</div><div class="hist-date">${t.date}</div><div class="hist-status" style="background:${t.color}22; color:${t.color}; border:1px solid ${t.color}55;">${t.status}</div></div><div class="hist-amount-box"><div class="hist-amount" style="color:${t.amount.includes('+') ? 'var(--success)' : 'var(--danger)'}">${t.amount}</div><div style="font-size:10px; color:var(--text-dim);">USDT</div></div></div>`;
+            });
+            document.getElementById('history-modal').classList.remove('hidden');
+        }
+
+        function openDeposit() { document.getElementById('deposit-modal').classList.remove('hidden'); startDepTimer(); }
+        
+        function openWithdraw() { 
+            document.getElementById('with-bal').innerText = currentBalance.toFixed(2); 
+            const histList = document.getElementById('quick-withdraw-history');
+            const withdraws = transactions.filter(t => t.type.includes('سحب'));
+            if(withdraws.length === 0) {
+                histList.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding:10px;">لا توجد سجلات سحب بعد</div>`;
+            } else {
+                histList.innerHTML = "";
+                withdraws.forEach(t => {
+                    histList.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid var(--border);">
+                            <div>
+                                <div style="font-weight:bold;">${t.amount} USDT</div>
+                                <div style="font-size:9px; color:var(--text-dim);">${t.date}</div>
+                            </div>
+                            <div style="font-size:9px; background:${t.color}22; color:${t.color}; padding:2px 6px; border-radius:4px;">${t.status}</div>
+                        </div>`;
+                });
+            }
+            document.getElementById('withdraw-modal').classList.remove('hidden'); 
+        }
+
+        function closeModals() { document.querySelectorAll('.overlay').forEach(m => m.classList.add('hidden')); }
+        
+        function switchWallet(type) {
+            document.getElementById('btn-trc').style.background = (type === 'TRC') ? 'var(--accent)' : '#222';
+            document.getElementById('btn-bnb').style.background = (type === 'BNB') ? 'var(--accent)' : '#222';
+            document.getElementById('addr-text').innerText = wallets[type];
+        }
+
+        function startDepTimer() {
+            let sec = 1799;
+            const el = document.getElementById('dep-countdown');
+            const it = setInterval(() => {
+                let m = Math.floor(sec/60), s = sec%60;
+                if(el) el.innerText = `صلاحية العنوان: ${m}:${s<10?'0'+s:s}`;
+                if(sec <= 0) clearInterval(it);
+                sec--;
+            }, 1000);
+        }
+
+        function doTask(lvl) {
+            if (currentVIPLevel == lvl) {
+                showToast("⏳ جاري تنفيذ المهمة...", "#10b981");
+                setTimeout(() => { showToast("✅ تمت المهمة! الرصيد سيحدث قريباً", "#10b981"); }, 1500);
+            } else {
+                showToast("⏳ جاري المعالجة...", "#8b5cf6");
+                setTimeout(() => { showToast("❌ خطأ: لم يتم تفعيل VIP " + lvl, "#ef4444"); setTimeout(openDeposit, 800); }, 1200);
+            }
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                const t = document.getElementById('timer'); if(!t) return;
+                const now = new Date();
+                const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
+                t.innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+            }, 1000);
+        }
+
+        function openTelegram() { window.open('https://t.me/NEWMONTServer_bot', '_blank'); }
+        function logout() { localStorage.clear(); location.reload(); }
+
+        window.onload = () => { 
+            if(localStorage.getItem('logged')) { 
+                showPage('app'); 
+                navTo('home'); 
+            } else {
+                showPage('login-page');
+            }
+        };
+    </script>
+</body>
+                </html>
