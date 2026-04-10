@@ -1,28 +1,33 @@
-<!DOCTYPE html>
+here<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEWMONT - Ultra Edition Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BontX • NEWMONT Ultra</title>
     
+    <!-- أيقونات وتحسينات PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NEWMONT">
+    <meta name="apple-mobile-web-app-title" content="BontX">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#050505">
     
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2150/2150150.png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2150/2150150.png">
     
-    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22NEWMONT%20PRO%22,%22short_name%22:%22NEWMONT%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23050505%22,%22theme_color%22:%22%238b5cf6%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/2150/2150150.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+    <!-- Manifest محسن -->
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22BontX%20PRO%22,%22short_name%22:%22BontX%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23050505%22,%22theme_color%22:%22%233b82f6%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/2150/2150150.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ========== ألوان زرقاء فقط ========== */
         :root { 
             --bg: #050505; 
             --card: #121212; 
-            --accent: #8b5cf6; 
-            --accent-light: #a78bfa;
+            --accent: #3b82f6;           
+            --accent-light: #60a5fa;      
             --text-dim: #9ca3af; 
             --border: #1f2937; 
             --success: #10b981; 
@@ -31,87 +36,237 @@
             --tg-blue: #24A1DE;
         }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            outline: none; 
+        }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            margin: 0; background: var(--bg); color: white; direction: rtl; 
-            overflow-x: hidden; scroll-behavior: smooth;
+            margin: 0; 
+            background: var(--bg); 
+            color: white; 
+            direction: rtl; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
             user-select: none;
         }
 
         .hidden { display: none !important; }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); } }
-        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
-        @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        @keyframes borderGlowGreen { 0% { border-color: var(--success); } 50% { border-color: #34d399; } 100% { border-color: var(--success); } }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } 
+        }
+        @keyframes pulseGreen { 
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } 
+        }
+        @keyframes scrollText { 
+            0% { transform: translateX(100%); } 
+            100% { transform: translateX(-100%); } 
+        }
+        @keyframes borderGlowGreen { 
+            0% { border-color: var(--success); } 
+            50% { border-color: #34d399; } 
+            100% { border-color: var(--success); } 
+        }
         
         .fade-in { animation: fadeInUp 0.5s ease forwards; }
 
-        #login-page, #signup-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #1e1b4b, #050505); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-container { width: 100%; max-width: 380px; background: rgba(0,0,0,0.6); padding: 30px; border-radius: 30px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+        #login-page, #signup-page { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at top, #172554, #050505); 
+            z-index: 10000; display: flex; align-items: center; justify-content: center; 
+            padding: 20px; 
+        }
+        .login-container { 
+            width: 100%; max-width: 380px; background: rgba(0,0,0,0.6); 
+            padding: 30px; border-radius: 30px; border: 1px solid var(--border); 
+            backdrop-filter: blur(10px); 
+        }
         
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 25px; border-radius: 50px; z-index: 11000; font-size: 14px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--accent-light); text-align: center; min-width: 200px; }
+        #toast { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
+            background: var(--accent); color: white; padding: 12px 25px; 
+            border-radius: 50px; z-index: 11000; font-size: 14px; 
+            display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 1px solid var(--accent-light); text-align: center; 
+            min-width: 200px; 
+        }
 
-        .header { background: rgba(5, 5, 5, 0.8); padding: 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
+        .header { 
+            background: rgba(5, 5, 5, 0.8); padding: 18px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid var(--border); position: sticky; 
+            top: 0; z-index: 100; backdrop-filter: blur(15px); 
+        }
         
-        .ticker-wrap { width: 100%; overflow: hidden; background: rgba(139, 92, 246, 0.1); border-bottom: 1px solid var(--border); height: 35px; display: flex; align-items: center; }
-        .ticker { display: inline-block; white-space: nowrap; animation: scrollText 25s linear infinite; padding-right: 50px; }
-        .ticker-item { display: inline-block; margin-right: 30px; font-size: 12px; color: #fff; }
+        .ticker-wrap { 
+            width: 100%; overflow: hidden; background: rgba(59, 130, 246, 0.1); 
+            border-bottom: 1px solid var(--border); height: 35px; 
+            display: flex; align-items: center; 
+        }
+        .ticker { 
+            display: inline-block; white-space: nowrap; 
+            animation: scrollText 25s linear infinite; padding-right: 50px; 
+        }
+        .ticker-item { 
+            display: inline-block; margin-right: 30px; font-size: 12px; color: #fff; 
+        }
         .t-dep { color: var(--success); font-weight: bold; }
         .t-wit { color: var(--gold); font-weight: bold; }
 
-        .nav { position: fixed; bottom: 0; width: 100%; background: rgba(10, 10, 10, 0.95); display: flex; justify-content: space-around; padding: 10px 0 28px; border-top: 1px solid var(--border); z-index: 90; }
-        .nav-item { color: #666; font-size: 11px; text-align: center; flex: 1; cursor: pointer; transition: 0.3s; position: relative; }
+        .nav { 
+            position: fixed; bottom: 0; width: 100%; 
+            background: rgba(10, 10, 10, 0.95); display: flex; 
+            justify-content: space-around; padding: 10px 0 28px; 
+            border-top: 1px solid var(--border); z-index: 90; 
+        }
+        .nav-item { 
+            color: #666; font-size: 11px; text-align: center; 
+            flex: 1; cursor: pointer; transition: 0.3s; position: relative; 
+        }
         .nav-item.active { color: var(--accent); }
         .nav-item.active i { transform: translateY(-5px); color: var(--accent); }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; transition: 0.3s; }
 
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 15px; margin-bottom: 15px; }
-        .btn-main { background: var(--accent); color: white; padding: 14px; border: none; border-radius: 14px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .card { 
+            background: var(--card); border: 1px solid var(--border); 
+            border-radius: 20px; padding: 15px; margin-bottom: 15px; 
+        }
+        .btn-main { 
+            background: var(--accent); color: white; padding: 14px; 
+            border: none; border-radius: 14px; width: 100%; 
+            font-weight: 700; cursor: pointer; transition: 0.2s; 
+            display: flex; align-items: center; justify-content: center; 
+            gap: 8px; 
+        }
         .btn-main:active { transform: scale(0.96); opacity: 0.9; }
         .btn-pulse { animation: pulse 2s infinite; }
         .btn-success-pulse { background: var(--success) !important; animation: pulseGreen 2s infinite !important; }
 
-        .addr-display { background: #000; border: 1px dashed var(--accent); padding: 15px; border-radius: 12px; font-size: 12px; word-break: break-all; color: #fff; margin: 15px 0; cursor: pointer; position: relative; }
-        .addr-display::after { content: '\f0c5'; font-family: 'Font Awesome 6 Free'; position: absolute; left: 10px; color: var(--accent); }
+        .addr-display { 
+            background: #000; border: 1px dashed var(--accent); 
+            padding: 15px; border-radius: 12px; font-size: 12px; 
+            word-break: break-all; color: #fff; margin: 15px 0; 
+            cursor: pointer; position: relative; 
+        }
+        .addr-display::after { 
+            content: '\f0c5'; font-family: 'Font Awesome 6 Free'; 
+            position: absolute; left: 10px; color: var(--accent); 
+        }
 
-        .vip-badge { background: linear-gradient(90deg, var(--gold), #ffcf33); color: black; padding: 2px 10px; border-radius: 6px; font-size: 10px; font-weight: 900; }
+        .vip-badge { 
+            background: linear-gradient(90deg, var(--gold), #ffcf33); 
+            color: black; padding: 2px 10px; border-radius: 6px; 
+            font-size: 10px; font-weight: 900; 
+        }
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal { background: #111; width: 92%; max-width: 400px; border-radius: 28px; padding: 25px; border: 1px solid #333; animation: fadeInUp 0.3s ease; position: relative; max-height: 85vh; overflow-y: auto; }
-        
-        .close-modal { position: absolute; top: 15px; left: 15px; color: var(--text-dim); font-size: 20px; cursor: pointer; padding: 5px; }
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); z-index: 9999; 
+            display: flex; justify-content: center; align-items: center; 
+            backdrop-filter: blur(5px); 
+        }
+        .modal { 
+            background: #111; width: 92%; max-width: 400px; 
+            border-radius: 28px; padding: 25px; border: 1px solid #333; 
+            animation: fadeInUp 0.3s ease; position: relative; 
+            max-height: 85vh; overflow-y: auto; 
+        }
+        .close-modal { 
+            position: absolute; top: 15px; left: 15px; 
+            color: var(--text-dim); font-size: 20px; cursor: pointer; 
+            padding: 5px; 
+        }
 
-        .dep-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 12px; color: var(--text-dim); }
+        .dep-step { 
+            display: flex; align-items: flex-start; gap: 10px; 
+            margin-bottom: 12px; font-size: 12px; color: var(--text-dim); 
+        }
         .dep-step i { color: var(--accent); margin-top: 3px; font-size: 14px; }
 
-        .input-box { background: #000; border: 1px solid var(--border); border-radius: 12px; padding: 12px; width: 100%; color: white; margin-bottom: 12px; outline: none; font-size: 14px; }
+        .input-box { 
+            background: #000; border: 1px solid var(--border); 
+            border-radius: 12px; padding: 12px; width: 100%; 
+            color: white; margin-bottom: 12px; outline: none; 
+            font-size: 14px; 
+        }
         
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 15px; text-align: center; }
+        .stat-grid { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; 
+            margin-bottom: 15px; 
+        }
+        .stat-box { 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            padding: 12px; border-radius: 15px; text-align: center; 
+        }
 
-        .history-card { background: #0a0a0a; border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .history-card { 
+            background: #0a0a0a; border: 1px solid var(--border); 
+            border-radius: 15px; padding: 15px; margin-bottom: 12px; 
+            display: flex; justify-content: space-between; align-items: center; 
+        }
         .hist-info { display: flex; flex-direction: column; gap: 4px; }
         .hist-type { font-size: 14px; font-weight: bold; }
         .hist-date { font-size: 10px; color: var(--text-dim); }
-        .hist-status { font-size: 9px; padding: 2px 8px; border-radius: 5px; width: fit-content; margin-top: 5px; }
+        .hist-status { 
+            font-size: 9px; padding: 2px 8px; border-radius: 5px; 
+            width: fit-content; margin-top: 5px; 
+        }
         .hist-amount-box { text-align: left; }
         .hist-amount { font-weight: 900; font-size: 15px; }
 
-        .me-header-card { background: linear-gradient(135deg, #1e1b4b 0%, #0a0a0a 100%); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin: 15px; position: relative; overflow: hidden; }
-        .me-header-card::before { content: ''; position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: var(--accent); filter: blur(100px); opacity: 0.2; }
-        .progress-bar-wrap { background: #000; height: 6px; border-radius: 10px; margin: 10px 0; overflow: hidden; }
-        .progress-bar-fill { background: var(--accent); height: 100%; width: 5%; border-radius: 10px; box-shadow: 0 0 10px var(--accent); }
+        .me-header-card { 
+            background: linear-gradient(135deg, #172554 0%, #0a0a0a 100%); 
+            border: 1px solid var(--border); border-radius: 25px; 
+            padding: 20px; margin: 15px; position: relative; 
+            overflow: hidden; 
+        }
+        .me-header-card::before { 
+            content: ''; position: absolute; top: -50px; left: -50px; 
+            width: 150px; height: 150px; background: var(--accent); 
+            filter: blur(100px); opacity: 0.2; 
+        }
+        .progress-bar-wrap { 
+            background: #000; height: 6px; border-radius: 10px; 
+            margin: 10px 0; overflow: hidden; 
+        }
+        .progress-bar-fill { 
+            background: var(--accent); height: 100%; width: 5%; 
+            border-radius: 10px; box-shadow: 0 0 10px var(--accent); 
+        }
 
-        .shield-indicator { font-size: 10px; background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 3px 8px; border-radius: 50px; display: flex; align-items: center; gap: 4px; width: fit-content; }
+        .shield-indicator { 
+            font-size: 10px; background: rgba(16, 185, 129, 0.1); 
+            color: var(--success); padding: 3px 8px; border-radius: 50px; 
+            display: flex; align-items: center; gap: 4px; width: fit-content; 
+        }
         
-        .detailed-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px; }
-        .d-stat-item { background: var(--card); border: 1px solid var(--border); padding: 10px 5px; border-radius: 15px; text-align: center; }
-        .d-stat-val { font-weight: 900; font-size: 14px; display: block; margin-bottom: 2px; }
-        .d-stat-lbl { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+        .detailed-stats { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; margin: 15px; 
+        }
+        .d-stat-item { 
+            background: var(--card); border: 1px solid var(--border); 
+            padding: 10px 5px; border-radius: 15px; text-align: center; 
+        }
+        .d-stat-val { 
+            font-weight: 900; font-size: 14px; display: block; 
+            margin-bottom: 2px; 
+        }
+        .d-stat-lbl { 
+            font-size: 8px; color: var(--text-dim); text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
 
         .featured-task-green {
             border: 2px solid var(--success) !important;
@@ -120,28 +275,266 @@
             position: relative;
         }
         .task-badge-green {
-            position: absolute;
-            top: -10px;
-            right: 15px;
-            background: var(--success);
-            color: black;
-            font-size: 9px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: bold;
+            position: absolute; top: -10px; right: 15px;
+            background: var(--success); color: black; font-size: 9px;
+            padding: 3px 10px; border-radius: 20px; font-weight: bold;
             box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
         }
+
+        .bontx-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .bontx-logo { 
+            font-weight: 900; font-size: 22px; 
+            background: linear-gradient(135deg, #fff, #60a5fa); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            background-clip: text; 
+        }
+        .wallet-total-card { 
+            background: linear-gradient(145deg, #0f172a, #0f0f1a); 
+            border: 1px solid #1e293b; 
+            border-radius: 24px; 
+            padding: 20px; margin-bottom: 18px; 
+        }
+        .badge-triple { display: flex; gap: 10px; margin: 12px 0; }
+        .badge-item { 
+            background: rgba(59, 130, 246, 0.15); 
+            padding: 6px 14px; 
+            border-radius: 30px; font-size: 12px; 
+            border: 1px solid rgba(59, 130, 246, 0.3); 
+            color: #ddd; 
+        }
+        .action-row { display: flex; gap: 8px; margin: 16px 0; }
+        .action-btn { 
+            flex: 1; background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); border-radius: 16px; 
+            padding: 12px 0; text-align: center; font-size: 13px; 
+            font-weight: 600; cursor: pointer; transition: 0.2s; 
+        }
+        .action-btn i { margin-left: 6px; }
+        .action-btn:active { background: var(--accent); border-color: var(--accent); }
+        
+        .crypto-ticker { 
+            display: flex; justify-content: space-around; 
+            background: #0c0c14; border-radius: 18px; 
+            padding: 12px 8px; margin: 16px 0; border: 1px solid #222; 
+        }
+        .crypto-item { text-align: center; }
+        .crypto-name { font-size: 13px; font-weight: bold; color: #bbb; }
+        .crypto-price { font-size: 16px; font-weight: 900; color: white; margin-top: 4px; }
+        
+        .market-notice { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: rgba(245,158,11,0.05); padding: 10px 16px; 
+            border-radius: 50px; border: 1px dashed var(--gold); 
+            margin-top: 12px; 
+        }
+        .live-badge { 
+            background: var(--danger); padding: 3px 10px; 
+            border-radius: 30px; font-size: 10px; font-weight: bold; 
+        }
+
+        .notif-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
+        .notif-title { font-weight: bold; display: block; margin-bottom: 4px; }
+        .notif-desc { margin: 0; font-size: 12px; color: var(--text-dim); }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .analysis-item {
+            background: #0e0e17;
+            border: 1px solid #2a2a40;
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .analysis-item i {
+            font-size: 22px;
+            color: var(--accent-light);
+            margin-bottom: 10px;
+        }
+        .analysis-label {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+        .analysis-value {
+            font-size: 26px;
+            font-weight: 900;
+            color: white;
+        }
+        .analysis-unit {
+            font-size: 12px;
+            color: var(--gold);
+            margin-right: 4px;
+        }
+        .analysis-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 30px;
+            margin-top: 8px;
+        }
+
+        .investor-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .investor-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .investor-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .investor-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .investor-time {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+        .investor-amount {
+            font-weight: 900;
+            color: var(--success);
+        }
+
+        .account-section-title {
+            font-size: 16px;
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .info-label i {
+            width: 24px;
+            color: var(--accent);
+        }
+        .info-value {
+            font-weight: 600;
+            color: #eee;
+        }
+        .security-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 12px;
+            border-radius: 14px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline:active { background: var(--accent); border-color: var(--accent); }
+
+        .qr-container {
+            background: white;
+            padding: 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            border: 1px solid var(--accent);
+        }
+        .qr-wrapper {
+            text-align: center;
+            margin: 15px 0 5px;
+        }
+        .network-details {
+            background: #0a0a0a;
+            border-radius: 14px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #2a2a40;
+        }
+        .network-badge {
+            display: inline-block;
+            background: var(--accent);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .fee-highlight {
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        .install-btn {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid var(--accent);
+            color: white;
+            margin-top: 12px;
+        }
+        .install-btn i {
+            color: var(--accent-light);
+        }
+
+        .market-ticker-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .market-scroll {
+            display: inline-block;
+            animation: scrollText 18s linear infinite;
+            padding-right: 30px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .price-up { color: var(--success); }
+        .price-down { color: var(--danger); }
     </style>
 </head>
 <body>
 
     <div id="toast"></div>
 
+    <!-- صفحات الدخول والتسجيل -->
     <div id="login-page">
         <div class="login-container fade-in">
             <div style="text-align: center; margin-bottom: 30px;">
                 <i class="fa-solid fa-gem" style="font-size: 50px; color: var(--accent); margin-bottom: 15px;"></i>
-                <h1 style="margin: 0; font-size: 28px; letter-spacing: 2px;">NEWMONT</h1>
+                <h1 style="margin: 0; font-size: 28px; letter-spacing: 2px;">BontX</h1>
                 <p style="color: var(--text-dim); font-size: 13px;">مستقبل التعدين السحابي الذكي</p>
             </div>
             <div class="input-group" style="margin-bottom: 15px;">
@@ -208,10 +601,11 @@
         </div>
     </div>
 
+    <!-- التطبيق الرئيسي -->
     <div id="app" class="hidden">
         <header class="header">
             <div onclick="openTelegram()" style="cursor:pointer;"><i class="fa-brands fa-telegram" style="color: var(--tg-blue); font-size: 22px;"></i></div>
-            <div style="font-weight: 900; letter-spacing: 2px; font-size: 18px;">NEWMONT <span style="color: var(--accent);">PRO</span></div>
+            <div style="font-weight: 900; letter-spacing: 1px; font-size: 20px;"><span style="background: linear-gradient(135deg, #fff, #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">BontX</span> <span style="color: var(--accent); font-size: 14px;">PRO</span></div>
             <div onclick="openNotifications()" style="cursor:pointer; position: relative;">
                 <i class="fa-solid fa-bell"></i>
                 <span style="position: absolute; top: -5px; right: -5px; background: var(--danger); width: 8px; height: 8px; border-radius: 50%;"></span>
@@ -220,174 +614,362 @@
 
         <div id="main-content" style="padding-bottom: 110px;"></div>
 
+        <!-- شريط التنقل السفلي -->
         <nav class="nav">
-            <div class="nav-item" onclick="navTo('home')" id="n-home"><i class="fa-solid fa-house-chimney"></i>بيت</div>
-            <div class="nav-item" onclick="navTo('task')" id="n-task"><i class="fa-solid fa-screwdriver-wrench"></i>مهام</div>
-            <div class="nav-item" onclick="navTo('vip')" id="n-vip"><i class="fa-solid fa-gem"></i>VIP</div>
-            <div class="nav-item" onclick="navTo('team')" id="n-team"><i class="fa-solid fa-users-gear"></i>فريق</div>
-            <div class="nav-item" onclick="navTo('me')" id="n-me"><i class="fa-solid fa-circle-user"></i>حسابي</div>
+            <div class="nav-item" id="nav-home" onclick="handleNavAction('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>البيت</span>
+            </div>
+            <div class="nav-item" id="nav-vip" onclick="handleNavAction('vip')">
+                <i class="fa-solid fa-crown"></i>
+                <span>Vip</span>
+            </div>
+            <div class="nav-item" id="nav-wallet" onclick="handleNavAction('wallet')">
+                <i class="fa-solid fa-wallet"></i>
+                <span>المحفظة</span>
+            </div>
+            <div class="nav-item" id="nav-trade" onclick="handleNavAction('trade')">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>التزامن بالصفقة</span>
+            </div>
+            <div class="nav-item" id="nav-chart" onclick="handleNavAction('chart')">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span>الرسومة</span>
+            </div>
+            <div class="nav-item" id="nav-account" onclick="handleNavAction('account')">
+                <i class="fa-solid fa-user-circle"></i>
+                <span>حسابي</span>
+            </div>
         </nav>
     </div>
 
+    <!-- المودالات -->
     <div id="notif-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
             <h3 style="text-align:center; margin-top:0; border-bottom: 1px solid var(--border); padding-bottom: 15px;"><i class="fa-solid fa-bell" style="margin-left: 8px; color: var(--gold);"></i>إشعارات المنصة</h3>
-            
-            <div class="notif-item">
-                <span class="notif-title">التراخيص القوية</span>
-                <p class="notif-desc">تراخيص من هيئات مثل (FCA) البريطانية، (ASIC) الأسترالية، أو تراخيص محلية قوية مثل (ADGM/DFSA) في الإمارات.</p>
-            </div>
-            
-            <div class="notif-item">
-                <span class="notif-title">نوع الحسابات</span>
-                <p class="notif-desc">توفر حسابات تداول حقيقية (Live Accounts) وحسابات تجريبية (Demo).</p>
-            </div>
-            
-            <div class="notif-item">
-                <span class="notif-title">منصات التداول</span>
-                <p class="notif-desc">التعامل مع منصات معروفة وموثوقة مثل MetaTrader 4 أو MetaTrader 5.</p>
-            </div>
-            
-            <div class="notif-item" style="border-bottom: none;">
-                <span class="notif-title">الشفافية والسحب</span>
-                <p class="notif-desc">الوضوح في شروط السحب والإيداع، وعدم وجود خدع خبيثة في تنفيذ الصفقات.</p>
-            </div>
+            <div class="notif-item"><span class="notif-title">التراخيص القوية</span><p class="notif-desc">تراخيص من هيئات مثل (FCA) البريطانية، (ASIC) الأسترالية.</p></div>
+            <div class="notif-item"><span class="notif-title">نوع الحسابات</span><p class="notif-desc">حسابات تداول حقيقية وتجريبية.</p></div>
+            <div class="notif-item"><span class="notif-title">منصات التداول</span><p class="notif-desc">MetaTrader 4 / 5.</p></div>
+            <div class="notif-item" style="border-bottom: none;"><span class="notif-title">الشفافية والسحب</span><p class="notif-desc">شروط واضحة وسحوبات فورية.</p></div>
         </div>
     </div>
 
     <div id="sync-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
-            <h3 style="text-align:center; margin-top:0; margin-bottom:20px;"><i class="fa-solid fa-sync-alt" style="margin-left: 8px; color: #0ea5e9;"></i>تزامن الصفقة الذكي</h3>
-            
-            <div style="background: rgba(14, 165, 233, 0.05); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(14, 165, 233, 0.1);">
-                <p style="font-size: 11px; color: #0ea5e9; margin: 0; line-height: 1.6;">قم بإدخال بيانات الصفقة الحالية من منصة التداول الخاصة بك لربطها آلياً بنظام التعدين وزيادة كفاءة الأرباح.</p>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                <div>
-                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px;">كود الطلب (Order ID):</label>
-                    <input type="text" id="sync-order-id" class="input-box" placeholder="مثال: #XM992024" style="margin-bottom:0;">
-                </div>
-
-                <div>
-                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px;">زوج العملات:</label>
-                    <select id="sync-pair" class="input-box" style="margin-bottom:0; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: left 12px top 50%; background-size: 10px auto; padding-left: 30px;">
-                        <option value="BTCUSDT">BTC / USDT</option>
-                        <option value="ETHUSDT">ETH / USDT</option>
-                        <option value="SOLUSDT">SOL / USDT</option>
-                        <option value="BNBUSDT">BNB / USDT</option>
-                    </select>
-                </div>
-            </div>
-
-            <button class="btn-main btn-pulse" onclick="executeSyncAction()" style="margin-top: 20px; background: #0ea5e9; border-color: #0ea5e9;">بدء التزامن الفوري</button>
+            <h3 style="text-align:center; margin-top:0;"><i class="fa-solid fa-sync-alt" style="margin-left: 8px;"></i>تزامن الصفقة الذكي</h3>
+            <div style="margin:20px 0;"><input type="text" id="sync-order-id" class="input-box" placeholder="كود الطلب"></div>
+            <button class="btn-main" onclick="executeSyncAction()">بدء التزامن</button>
         </div>
     </div>
 
+    <!-- مودال الإيداع المطور مع باركود وتفاصيل -->
     <div id="deposit-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
-            <h3 style="text-align:center; margin-top:0; margin-bottom: 20px;"><i class="fa-solid fa-wallet" style="margin-left: 8px;"></i>إيداع رصيد USDT</h3>
+            <h3 style="text-align:center;"><i class="fa-solid fa-wallet"></i> إيداع USDT</h3>
             
-            <div class="dep-step"><i class="fa-solid fa-1"></i> اختر الشبكة التي ترغب في التحويل من خلالها:</div>
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <button class="btn-main" id="btn-trc" style="flex:1; background:var(--accent);" onclick="switchWallet('TRC')">TRC20</button>
-                <button class="btn-main" id="btn-bnb" style="flex:1; background:#222;" onclick="switchWallet('BNB')">BEP20</button>
+                <button class="btn-main" id="btn-trc" onclick="switchWallet('TRC')">TRC20</button>
+                <button class="btn-main" id="btn-bnb" style="background:#222;" onclick="switchWallet('BNB')">BEP20</button>
             </div>
             
-            <div class="dep-step"><i class="fa-solid fa-2"></i> انسخ عنوان المحفظة وقم بإتمام التحويل:</div>
-            <div class="addr-display" id="addr-text" onclick="copyOnly(this.innerText)">TTuwCDxt1mwkvw2Zr25UfdeKPNHbFouvpB</div>
-            
-            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px;">
-                <div style="font-size: 11px; color: var(--gold); display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-triangle-exclamation"></i> تذكر: أرسل USDT فقط لهذه المحفظة.
+            <div class="qr-wrapper">
+                <div class="qr-container">
+                    <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TC7CaezvbGSNzqXPWp4NLAMS8W6DHmbrz8" alt="QR Code" style="display:block; width:180px; height:180px; margin:0 auto;">
                 </div>
-                <div style="font-size: 10px; color: #888; margin-top: 5px;">يستغرق التأكيد من 1 إلى 3 دقائق بعد وصول الأموال.</div>
+                <p style="font-size:11px; color:var(--text-dim); margin-top:8px;">
+                    <i class="fa-solid fa-qrcode"></i> امسح الكود لنسخ العنوان
+                </p>
             </div>
 
-            <button class="btn-main btn-pulse" onclick="confirmDepositAction()">تأكيد الشحن</button>
-            <div id="dep-countdown" style="text-align: center; font-size: 10px; color: var(--text-dim); margin-top: 10px;">صلاحية العنوان: 29:59</div>
+            <div class="network-details">
+                <span class="network-badge" id="network-label">🌐 شبكة TRC20</span>
+                <div style="font-size:13px; margin:10px 0; word-break: break-all;">
+                    <i class="fa-solid fa-link" style="margin-left:6px; color:var(--accent);"></i>
+                    <span id="addr-text-display">TC7CaezvbGSNzqXPWp4NLAMS8W6DHmbrz8</span>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:12px;">
+                    <button class="btn-main" style="padding:10px; font-size:13px;" onclick="copyAddress()">
+                        <i class="fa-regular fa-copy"></i> نسخ
+                    </button>
+                    <button class="btn-main" style="padding:10px; font-size:13px; background:var(--success);" onclick="confirmDepositAction()">
+                        <i class="fa-solid fa-check"></i> تأكيد الشحن
+                    </button>
+                </div>
+            </div>
+
+            <div id="dep-countdown" style="text-align:center; margin-top:15px; font-weight:bold;">صلاحية العنوان: 29:59</div>
+            <p style="font-size:11px; color:var(--text-dim); margin-top:10px; text-align:center;">
+                <i class="fa-solid fa-shield"></i> أرسل USDT فقط على الشبكة المختارة
+            </p>
         </div>
     </div>
 
+    <!-- مودال السحب -->
     <div id="withdraw-modal" class="overlay hidden">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
-            <h3 style="text-align:center; margin-top:0; margin-bottom:20px;"><i class="fa-solid fa-money-bill-transfer" style="margin-left: 8px;"></i>سحب الأرباح</h3>
+            <h3 style="text-align:center;">سحب الأرباح</h3>
+            <div style="text-align:center; margin:15px 0;"><span id="with-bal">0.00</span> USDT</div>
+            <input type="number" id="withdraw-amount" class="input-box" placeholder="المبلغ">
+            <input type="text" id="withdraw-addr" class="input-box" placeholder="عنوان المحفظة">
             
-            <div style="background: #000; border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 20px; text-align: center;">
-                <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 5px;">الرصيد القابل للسحب</div>
-                <div style="font-size: 26px; font-weight: 900; color: var(--success);"><span id="with-bal">0.00</span> <small style="font-size: 12px; color: white;">USDT</small></div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div>
-                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 8px; margin-right: 5px;">مبلغ السحب:</label>
-                    <input type="number" id="withdraw-amount" class="input-box" placeholder="مثال: 10.00" style="margin-bottom:0;">
-                    <div style="display: flex; justify-content: space-between; margin-top: 5px; padding: 0 5px;">
-                        <span style="font-size: 9px; color: var(--text-dim);">الحد الأدنى: 2 USDT</span>
-                        <span style="font-size: 9px; color: var(--gold);">الرسوم: 0%</span>
-                    </div>
+            <div id="withdraw-fee-panel" style="background: #1a1a2e; border-radius: 12px; padding: 12px; margin: 15px 0; font-size: 13px; color: #ddd; border: 1px solid #2a2a40;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>الحد الأدنى للسحب:</span>
+                    <span style="color: white; font-weight: bold;">2 USDT</span>
                 </div>
-
-                <div>
-                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 8px; margin-right: 5px;">اختر شبكة السحب:</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <button id="with-trc" style="background: var(--accent); border: 1px solid var(--accent); padding: 10px; border-radius: 10px; font-size: 12px; text-align: center; cursor: pointer; color: white;" onclick="switchWithdrawNet('TRC')">USDT (TRC20)</button>
-                        <button id="with-bnb" style="background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 12px; text-align: center; color: #fff; cursor: pointer;" onclick="switchWithdrawNet('BNB')">USDT (BEP20)</button>
-                    </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>رسوم الشبكة (<span id="fee-network-name">TRC20</span>):</span>
+                    <span style="color: white; font-weight: bold;" id="fee-amount-display">1.00 USDT</span>
                 </div>
-
-                <div>
-                    <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 8px; margin-right: 5px;">عنوان محفظتك:</label>
-                    <input type="text" id="withdraw-addr" class="input-box" placeholder="ضع عنوان المحفظة هنا">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>مدة المعالجة:</span>
+                    <span style="color: white; font-weight: bold;">1 - 5 دقائق</span>
+                </div>
+                <div style="margin-top: 10px; font-size: 11px; color: #a0a0b0; text-align: center; border-top: 1px dashed #2a2a40; padding-top: 8px;">
+                    <i class="fa-solid fa-circle-info" style="margin-left: 5px;"></i> يتم خصم رسوم الشبكة من المبلغ المسحوب
                 </div>
             </div>
 
-            <div style="background: rgba(16, 185, 129, 0.05); padding: 10px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(16, 185, 129, 0.1);">
-                <p style="font-size: 10px; color: var(--success); margin: 0; line-height: 1.5;"><i class="fa-solid fa-bolt-lightning"></i> يتم معالجة طلبات السحب آلياً وتصل خلال 1-10 دقائق.</p>
+            <div style="display:flex; gap:10px; margin:15px 0;">
+                <button id="with-trc" style="flex:1; padding:10px; border-radius:10px; background:var(--accent);" onclick="switchWithdrawNet('TRC')">TRC20</button>
+                <button id="with-bnb" style="flex:1; padding:10px; border-radius:10px; background:#000;" onclick="switchWithdrawNet('BNB')">BEP20</button>
             </div>
-
-            <button class="btn-main btn-pulse" onclick="handleWithdraw()" style="margin-bottom: 20px;">تأكيد عملية السحب</button>
-
-            <h4 style="font-size: 13px; margin: 20px 0 10px; border-top: 1px solid var(--border); padding-top: 15px;">سجل السحوبات</h4>
-            <div id="quick-withdraw-history" style="font-size: 11px;"></div>
+            <button class="btn-main" onclick="handleWithdraw()">تأكيد السحب</button>
+            <div id="quick-withdraw-history" style="margin-top:20px;"></div>
         </div>
     </div>
 
     <div id="history-modal" class="overlay hidden">
-        <div class="modal" style="max-width: 450px;">
+        <div class="modal">
             <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
-            <h3 style="text-align:center; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 15px;">سجل المعاملات</h3>
-            <div id="history-list" style="margin-top:20px;"></div>
+            <h3>سجل المعاملات</h3>
+            <div id="history-list"></div>
+        </div>
+    </div>
+
+    <div id="chart-modal" class="overlay hidden">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center;"><i class="fa-solid fa-chart-simple" style="margin-left: 8px;"></i>الرسوم البيانية</h3>
+            <div style="padding: 20px; text-align: center; background: #0a0a0a; border-radius: 16px;">
+                <i class="fa-solid fa-chart-line" style="font-size: 40px; color: var(--accent); margin-bottom: 10px;"></i>
+                <p>الرسوم البيانية المتقدمة قيد التطوير.</p>
+                <p style="font-size: 12px; color: var(--text-dim);">ستتوفر قريباً مع تحديث المنصة.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تعليمات التثبيت لنظام iOS -->
+    <div id="install-instructions-modal" class="overlay hidden">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" onclick="closeModals()"></i>
+            <h3 style="text-align:center; margin-top:0;"><i class="fa-brands fa-apple" style="margin-left: 8px;"></i> تثبيت التطبيق</h3>
+            <div style="padding: 10px 0;">
+                <p style="font-size: 14px; margin-bottom: 20px;">لتثبيت BontX على شاشتك الرئيسية:</p>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                    <div style="background: #1e293b; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-square-arrow-up-right" style="font-size: 24px; color: var(--accent);"></i>
+                    </div>
+                    <span>1. اضغط على زر <strong>مشاركة</strong> في شريط المتصفح (مربع مع سهم للأعلى).</span>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+                    <div style="background: #1e293b; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-plus" style="font-size: 24px; color: var(--accent);"></i>
+                    </div>
+                    <span>2. اختر <strong>"إضافة إلى الشاشة الرئيسية"</strong>.</span>
+                </div>
+                <div style="display: flex; gap: 15px; margin-bottom: 10px; align-items: center;">
+                    <div style="background: #1e293b; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-check" style="font-size: 24px; color: var(--success);"></i>
+                    </div>
+                    <span>3. اضغط <strong>إضافة</strong> وسيظهر التطبيق على الشاشة.</span>
+                </div>
+                <p style="font-size: 12px; color: var(--text-dim); margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">💡 بالنسبة لأندرويد أو Chrome، اضغط على "تثبيت التطبيق" مرة أخرى بعد الإغلاق لتظهر نافذة التثبيت التلقائي.</p>
+            </div>
+            <button class="btn-main" onclick="closeModals()" style="margin-top: 10px;">حسناً، فهمت</button>
         </div>
     </div>
 
     <script>
-        let currentBalance = 0.00;
+        // ---------- بيانات عامة (مضبوطة على 0 USDT بدقة عالية) ----------
+        let currentBalance = 0.00;          // ✅ رصيد USDT = 0
         let totalWithdrawn = 0.00;
         let totalDeposited = 0.00;
         let todayEarned = 0.00;
         let totalProfit = 0.00;
-        let transactions = [];
-        let investorInterval;
-        let selectedWithdrawNet = 'TRC';
-        let currentVIPLevel = 0;
         
-        // تم تحديث العنوان هنا بدقة
-        const wallets = { 
-            'TRC': 'TTuwCDxt1mwkvw2Zr25UfdeKPNHbFouvpB', 
-            'BNB': '0xd996cdd2f4d6a675873035838d2fb3b9bdc97624' 
+        // قائمة المعاملات فارغة بداية
+        let transactions = [];
+        
+        let investorInterval;
+        let depTimerInterval = null;
+        let selectedWithdrawNet = 'TRC';
+        let currentVIPLevel = 3;
+        let currentNetwork = 'TRC';
+        let marketUpdateInterval = null;
+        
+        // خاصية تثبيت PWA
+        let deferredPrompt = null;
+        
+        const networkFees = {
+            'TRC': 1.00,
+            'BNB': 0.80
         };
-        const sessionInviteCode = "NM" + Math.floor(100000 + Math.random() * 900000);
+
+        const wallets = { 
+            'TRC': 'TC7CaezvbGSNzqXPWp4NLAMS8W6DHmbrz8', 
+            'BNB': '0x42a3ca67f332f5f31608342a12fd8d2dcf268702' 
+        };
+        const sessionInviteCode = "BNT" + Math.floor(100000 + Math.random() * 900000);
+
+        // ========== دوال التحقق من صحة البيانات ==========
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function isStrongPassword(password) {
+            // كلمة مرور قوية: 8 أحرف على الأقل، تحتوي على حرف كبير، حرف صغير، ورقم. بدون رمز خاص.
+            const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            return re.test(password);
+        }
+
+        function getUsers() {
+            const users = localStorage.getItem('bontx_users');
+            return users ? JSON.parse(users) : [];
+        }
+
+        function saveUser(user) {
+            const users = getUsers();
+            users.push(user);
+            localStorage.setItem('bontx_users', JSON.stringify(users));
+        }
+
+        function findUserByEmail(email) {
+            const users = getUsers();
+            return users.find(u => u.email === email);
+        }
+
+        function getCurrentUser() {
+            const email = localStorage.getItem('user_email');
+            if (!email) return null;
+            return findUserByEmail(email);
+        }
+
+        // ========== دوال تسجيل الدخول والتسجيل ==========
+        function handleLogin() {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            if (!email || !pass) {
+                showToast("⚠️ الرجاء إدخال البريد الإلكتروني وكلمة المرور", "#ef4444");
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showToast("❌ تنسيق البريد الإلكتروني غير صحيح", "#ef4444");
+                return;
+            }
+            const user = findUserByEmail(email);
+            if (!user) {
+                showToast("❌ البريد الإلكتروني غير مسجل", "#ef4444");
+                return;
+            }
+            if (user.password !== pass) {
+                showToast("❌ كلمة المرور غير صحيحة", "#ef4444");
+                return;
+            }
+            showToast("✅ تم تسجيل الدخول بنجاح", "#10b981");
+            localStorage.setItem('logged', 'true');
+            localStorage.setItem('user_email', email);
+            setTimeout(() => {
+                showPage('app');
+                navTo('home');
+            }, 500);
+        }
+
+        function handleSignup() {
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const passConfirm = document.getElementById('reg-pass-confirm').value;
+            const invite = document.getElementById('reg-invite').value.trim();
+
+            if (!email || !pass || !passConfirm) {
+                showToast("⚠️ أكمل جميع الحقول المطلوبة", "#ef4444");
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showToast("❌ تنسيق البريد الإلكتروني غير صحيح", "#ef4444");
+                return;
+            }
+            if (!isStrongPassword(pass)) {
+                showToast("❌ كلمة المرور يجب أن تكون 8 أحرف على الأقل وتحتوي على حرف كبير وصغير ورقم", "#ef4444");
+                return;
+            }
+            if (pass !== passConfirm) {
+                showToast("❌ كلمتا المرور غير متطابقتين", "#ef4444");
+                return;
+            }
+            if (findUserByEmail(email)) {
+                showToast("❌ هذا البريد الإلكتروني مسجل بالفعل", "#ef4444");
+                return;
+            }
+            const joinDate = new Date().toLocaleDateString('ar-EG');
+            const newUser = { email, password: pass, joinDate, inviteCode: invite || "لا يوجد" };
+            saveUser(newUser);
+            showToast("✅ تم إنشاء الحساب بنجاح", "#10b981");
+            localStorage.setItem('logged', 'true');
+            localStorage.setItem('user_email', email);
+            setTimeout(() => {
+                showPage('app');
+                navTo('home');
+            }, 800);
+        }
+
+        // ========== أسماء أجنبية ==========
+        const foreignFirstNames = ["James","John","Robert","Michael","William","David","Richard","Joseph","Thomas","Charles","Christopher","Daniel","Matthew","Anthony","Mark","Donald","Steven","Paul","Andrew","Joshua","Kenneth","Kevin","Brian","George","Edward","Ronald","Timothy","Jason","Jeffrey","Ryan","Jacob","Gary","Nicholas","Eric","Jonathan","Stephen","Larry","Justin","Scott","Brandon","Benjamin","Samuel","Frank","Gregory","Raymond","Alexander","Patrick","Jack","Dennis","Jerry","Tyler","Aaron","Jose","Henry","Adam","Douglas","Nathan","Peter","Zachary","Kyle","Walter","Harold","Jeremy","Ethan","Carl","Keith","Roger","Gerald","Christian","Terry","Sean","Arthur","Austin","Noah","Jesse","Joe","Bryan","Billy","Jordan","Albert","Dylan","Bruce","Willie","Gabriel","Alan","Juan","Logan","Wayne","Ralph","Roy","Eugene","Vincent","Randy","Russell","Louis","Philip","Bobby","Johnny","Bradley","Cody","Emma","Olivia","Ava","Isabella","Sophia","Mia","Charlotte","Amelia","Harper","Evelyn","Abigail","Emily","Elizabeth","Sofia","Avery","Ella","Madison","Scarlett","Victoria","Aria","Grace","Chloe","Camila","Penelope","Riley","Layla","Lillian","Nora","Zoey","Mila","Aubrey","Hannah","Lily","Addison","Eleanor","Natalie","Luna","Savannah","Brooklyn","Leah","Zoe","Stella","Hazel","Ellie","Paisley","Audrey","Skylar","Violet","Claire"];
+        const foreignLastNames = ["Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Rodriguez","Martinez","Hernandez","Lopez","Gonzalez","Wilson","Anderson","Thomas","Taylor","Moore","Jackson","Martin","Lee","Perez","Thompson","White","Harris","Sanchez","Clark","Ramirez","Lewis","Robinson","Walker","Young","Allen","King","Wright","Scott","Torres","Nguyen","Hill","Flores","Green","Adams","Nelson","Baker","Hall","Rivera","Campbell","Mitchell","Carter","Roberts","Gomez","Phillips","Evans","Turner","Diaz","Parker","Cruz","Edwards","Collins","Reyes","Stewart","Morris","Morales","Murphy","Cook","Rogers","Gutierrez","Ortiz","Morgan","Cooper","Peterson","Bailey","Reed","Kelly","Howard","Ramos","Kim","Cox","Ward","Richardson","Watson","Brooks","Chavez","Wood","James","Bennett","Gray","Mendoza","Ruiz","Hughes","Price","Alvarez","Castillo","Sanders","Patel","Myers","Long","Ross","Foster","Jimenez"];
+
+        function generateForeignName() {
+            const firstName = foreignFirstNames[Math.floor(Math.random() * foreignFirstNames.length)];
+            const lastName = foreignLastNames[Math.floor(Math.random() * foreignLastNames.length)];
+            if (Math.random() > 0.5) {
+                const middleInitial = String.fromCharCode(65 + Math.floor(Math.random() * 26)) + '.';
+                return `${firstName} ${middleInitial} ${lastName}`;
+            }
+            return `${firstName} ${lastName}`;
+        }
+
+        function getRandomRecentTime() {
+            const now = new Date();
+            const minutesAgo = Math.floor(Math.random() * 60 * 24);
+            const past = new Date(now.getTime() - minutesAgo * 60000);
+            return past.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function renderInvestors() {
+            const container = document.getElementById('investor-list');
+            if (!container) return;
+            const count = Math.floor(Math.random() * 3) + 5;
+            let html = '';
+            for (let i = 0; i < count; i++) {
+                const name = generateForeignName();
+                const amount = (Math.random() * 4500 + 500).toFixed(2);
+                const time = getRandomRecentTime();
+                const avatarChar = name.charAt(0);
+                html += `<div class="investor-item fade-in"><div class="investor-info"><div class="investor-avatar">${avatarChar}</div><div><div class="investor-name">${name}</div><div class="investor-time">🕒 ${time}</div></div></div><div class="investor-amount">+ $${amount}</div></div>`;
+            }
+            container.innerHTML = html;
+        }
 
         function getPersistentUserID() {
-            let userID = localStorage.getItem('newmont_user_id');
+            let userID = localStorage.getItem('bontx_user_id');
             if (!userID) {
-                userID = "NM" + Math.floor(100000 + Math.random() * 900000);
-                localStorage.setItem('newmont_user_id', userID);
+                userID = "BNT" + Math.floor(100000 + Math.random() * 900000);
+                localStorage.setItem('bontx_user_id', userID);
             }
             return userID;
         }
@@ -405,18 +987,22 @@
             {l:10, p:45000, d:16000.0, icon:'fa-gem', color:'var(--border)'}
         ];
 
-        function showToast(msg, color = "#8b5cf6") {
+        function showToast(msg, color = "#3b82f6") {
             const t = document.getElementById('toast');
-            t.style.background = color; t.innerText = msg; t.style.display = 'block';
-            setTimeout(() => { t.style.display = 'none'; }, 2500);
+            t.style.background = color; 
+            t.innerText = msg; 
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
         }
-
-        function copyOnly(txt) {
-            navigator.clipboard.writeText(txt).then(() => { 
-                showToast("تم النسخ بنجاح ✅", "#10b981"); 
-            });
+        
+        function copyOnly(txt) { 
+            navigator.clipboard.writeText(txt).then(() => showToast("تم النسخ ✅", "#10b981")); 
         }
-
+        function copyAddress() {
+            const addr = wallets[currentNetwork];
+            copyOnly(addr);
+        }
+        
         function showPage(pageId) {
             document.getElementById('login-page').classList.add('hidden');
             document.getElementById('signup-page').classList.add('hidden');
@@ -424,431 +1010,367 @@
             document.getElementById(pageId).classList.remove('hidden');
         }
 
-        function handleSignup() {
-            const email = document.getElementById('reg-email').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-            const passConfirm = document.getElementById('reg-pass-confirm').value.trim();
+        function updateWithdrawFeeDisplay() {
+            const feeAmount = networkFees[selectedWithdrawNet];
+            const netName = selectedWithdrawNet === 'TRC' ? 'TRC20' : 'BEP20';
+            document.getElementById('fee-network-name').innerText = netName;
+            document.getElementById('fee-amount-display').innerText = feeAmount.toFixed(2) + ' USDT';
             
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if(!email || !pass || !passConfirm) { 
-                showToast("⚠️ يرجى تعبئة كافة الحقول المطلوبة", "#ef4444"); 
-                return; 
-            }
-            if(!emailPattern.test(email)) { 
-                showToast("❌ صيغة البريد الإلكتروني غير صحيحة", "#ef4444"); 
-                return; 
-            }
-            if(pass.length < 6) { 
-                showToast("❌ يجب أن تكون كلمة المرور 6 أحرف على الأقل", "#ef4444"); 
-                return; 
-            }
-            if(pass !== passConfirm) { 
-                showToast("❌ كلمات المرور غير متطابقة", "#ef4444"); 
-                return; 
-            }
-
-            showToast("⏳ جاري إنشاء حسابك المؤمن...", "#f59e0b");
-            setTimeout(() => {
-                localStorage.setItem('logged', 'true');
-                localStorage.setItem('user_email', email);
-                showToast("✅ تم إنشاء الحساب بنجاح، مرحباً بك", "#10b981");
-                showPage('app');
-                navTo('home');
-            }, 1500);
+            document.getElementById('with-trc').style.background = (selectedWithdrawNet === 'TRC') ? 'var(--accent)' : '#000';
+            document.getElementById('with-bnb').style.background = (selectedWithdrawNet === 'BNB') ? 'var(--accent)' : '#000';
         }
 
-        function handleLogin() {
-            const emailInput = document.getElementById('login-email').value.trim();
-            const passInput = document.getElementById('login-pass').value.trim();
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            if (!emailInput || !passInput) { 
-                showToast("⚠️ يرجى إدخل البريد وكلمة المرور", "#ef4444"); 
-                return; 
-            }
-            if(!emailPattern.test(emailInput)) { 
-                showToast("❌ يرجى إدخل بريد إلكتروني صحيح", "#ef4444"); 
-                return; 
-            }
-            if(passInput.length < 6) { 
-                showToast("❌ كلمة المرور التي أدخلتها قصيرة جداً", "#ef4444"); 
-                return; 
-            }
-
-            showToast("⏳ جاري التحقق من الهوية...", "#8b5cf6");
-            setTimeout(() => {
-                localStorage.setItem('logged', 'true');
-                localStorage.setItem('user_email', emailInput);
-                showToast("تم تسجيل الدخول بنجاح 🔓", "#10b981");
-                showPage('app');
-                navTo('home');
-            }, 1000);
+        function switchWithdrawNet(net) {
+            selectedWithdrawNet = net;
+            updateWithdrawFeeDisplay();
         }
 
         function handleWithdraw() {
             const amount = parseFloat(document.getElementById('withdraw-amount').value);
             const addr = document.getElementById('withdraw-addr').value.trim();
-            if (isNaN(amount) || amount < 2) { showToast("❌ الحد الأدنى للسحب 2 USDT", "#ef4444"); return; }
-            if (!addr || addr.length < 10) { showToast("❌ يرجى إدخل عنوان محفظة صحيح", "#ef4444"); return; }
-            if (amount > currentBalance) { showToast("❌ رصيد غير كافٍ", "#ef4444"); return; }
+            const fee = networkFees[selectedWithdrawNet];
             
-            currentBalance -= amount; 
+            if (isNaN(amount) || amount < 2) { showToast("❌ الحد الأدنى 2 USDT", "#ef4444"); return; }
+            if (!addr) { showToast("❌ أدخل عنوان المحفظة", "#ef4444"); return; }
+            
+            const totalNeeded = amount + fee;
+            if (totalNeeded > currentBalance) { 
+                showToast(`❌ رصيد غير كاف (المطلوب ${totalNeeded.toFixed(2)} USDT شامل الرسوم)`, "#ef4444"); 
+                return; 
+            }
+            
+            currentBalance -= totalNeeded; 
             totalWithdrawn += amount;
-            
             transactions.unshift({ 
-                type: 'سحب أرباح (' + selectedWithdrawNet + ')', 
+                type: `سحب (${selectedWithdrawNet})`, 
                 date: new Date().toLocaleString('ar-EG'), 
                 status: 'قيد المراجعة', 
                 color: '#f59e0b', 
                 amount: `-${amount.toFixed(2)}` 
             });
-
-            showToast("✅ تم إرسال طلب السحب", "#10b981");
+            
+            showToast(`✅ تم تقديم طلب سحب ${amount.toFixed(2)} USDT (رسوم ${fee.toFixed(2)} USDT)`, "#10b981");
             document.getElementById('withdraw-amount').value = '';
-            openWithdraw(); 
-            if(document.getElementById('n-me').classList.contains('active')) navTo('me');
+            document.getElementById('withdraw-addr').value = '';
+            openWithdraw();
+            if(document.getElementById('nav-account') && document.getElementById('nav-account').classList.contains('active')) navTo('me');
         }
 
-        function openNotifications() {
-            document.getElementById('notif-modal').classList.remove('hidden');
+        function openNotifications() { document.getElementById('notif-modal').classList.remove('hidden'); }
+        function confirmDepositAction() { 
+            showToast("⏳ جاري التحقق...", "#f59e0b"); 
+            setTimeout(() => { closeModals(); showToast("سيتم تحديث الرصيد قريباً", "#10b981"); }, 1200); 
         }
-
-        function confirmDepositAction() {
-            showToast("⏳ يتم التحقق من المعاملة...", "#f59e0b");
-            setTimeout(() => { alert("شكرًا لك. بمجرد وصول التأكيدات من الشبكة، سيتم تحديث رصيدك تلقائيًا."); closeModals(); }, 1200);
+        function openSyncModal() { document.getElementById('sync-modal').classList.remove('hidden'); }
+        function executeSyncAction() { closeModals(); showToast("❌ الصفقة غير موجودة", "#ef4444"); }
+        function closeModals() { 
+            document.querySelectorAll('.overlay').forEach(m => m.classList.add('hidden')); 
+            if (depTimerInterval) { clearInterval(depTimerInterval); depTimerInterval = null; }
         }
-
-        function switchWithdrawNet(net) {
-            selectedWithdrawNet = net;
-            document.getElementById('with-trc').style.background = (net === 'TRC') ? 'var(--accent)' : '#000';
-            document.getElementById('with-trc').style.borderColor = (net === 'TRC') ? 'var(--accent)' : 'var(--border)';
-            document.getElementById('with-bnb').style.background = (net === 'BNB') ? 'var(--accent)' : '#000';
-            document.getElementById('with-bnb').style.borderColor = (net === 'BNB') ? 'var(--accent)' : 'var(--border)';
+        
+        function switchWallet(type) {
+            currentNetwork = type;
+            document.getElementById('btn-trc').style.background = (type === 'TRC') ? 'var(--accent)' : '#222';
+            document.getElementById('btn-bnb').style.background = (type === 'BNB') ? 'var(--accent)' : '#222';
+            const addr = wallets[type];
+            document.getElementById('addr-text-display').innerText = addr;
+            const qrImg = document.getElementById('qr-code-img');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(addr)}`;
+            document.getElementById('network-label').innerHTML = (type === 'TRC') ? '🌐 شبكة TRC20' : '🌐 شبكة BEP20';
         }
-
-        function openSyncModal() {
-            document.getElementById('sync-modal').classList.remove('hidden');
+        
+        function openDeposit() { 
+            document.getElementById('deposit-modal').classList.remove('hidden'); 
+            switchWallet('TRC');
+            startDepTimer(); 
         }
-
-        function executeSyncAction() {
-            const orderId = document.getElementById('sync-order-id').value.trim();
-            if (!orderId) {
-                showToast("⚠️ يرجى إدخال كود الطلب", "#ef4444");
+        
+        function openWithdraw() { 
+            document.getElementById('with-bal').innerText = currentBalance.toFixed(2);
+            selectedWithdrawNet = 'TRC';
+            updateWithdrawFeeDisplay();
+            
+            const histDiv = document.getElementById('quick-withdraw-history');
+            const withdrawTxs = transactions.filter(t=>t.type.includes('سحب'));
+            histDiv.innerHTML = withdrawTxs.length ? withdrawTxs.map(t=>`<div style="padding:8px; background:#0a0a0a; border-radius:10px; margin-bottom:6px;">${t.amount} USDT - ${t.status}</div>`).join('') : '<div>لا يوجد سحوبات</div>';
+            document.getElementById('withdraw-modal').classList.remove('hidden'); 
+        }
+        
+        function openHistory() {
+            const list = document.getElementById('history-list');
+            if (transactions.length === 0) {
+                list.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-dim);">لا توجد معاملات حتى الآن</div>';
+                document.getElementById('history-modal').classList.remove('hidden');
                 return;
             }
-            closeModals();
-            showToast("⏳ جاري التحقق من كود الطلب...", "#8b5cf6");
-            setTimeout(() => {
-                showToast("❌ خطأ: لم نتمكن من العثور على الصفقة في قاعدة البيانات", "#ef4444");
-                document.getElementById('sync-order-id').value = '';
-            }, 2000);
+            list.innerHTML = '';
+            transactions.forEach(t => { 
+                list.innerHTML += `<div class="history-card"><div><div>${t.type}</div><div style="font-size:10px;">${t.date}</div></div><div style="color:${t.amount.includes('+')?'var(--success)':'var(--danger)'}">${t.amount}</div></div>`; 
+            });
+            document.getElementById('history-modal').classList.remove('hidden');
+        }
+        
+        function startDepTimer() { 
+            if (depTimerInterval) clearInterval(depTimerInterval);
+            let sec = 1799; 
+            const el = document.getElementById('dep-countdown');
+            depTimerInterval = setInterval(() => { 
+                let m = Math.floor(sec/60), s = sec%60; 
+                if(el) el.innerText = `صلاحية العنوان: ${m}:${s<10?'0'+s:s}`; 
+                sec--; 
+                if (sec < 0) clearInterval(depTimerInterval);
+            }, 1000); 
+        }
+        
+        function handleVIPTask(price) {
+            if (currentBalance < price) {
+                showToast("⚠️ الرصيد غير كافي", "#ef4444");
+                setTimeout(() => { openDeposit(); }, 800);
+            } else {
+                showToast("✅ تم تفعيل المهمة بنجاح", "#10b981");
+            }
+        }
+        
+        function openTelegram() { window.open('https://t.me/BontX_bot', '_blank'); }
+        function logout() { 
+            localStorage.removeItem('logged');
+            localStorage.removeItem('user_email');
+            location.reload(); 
+        }
+
+        function initTicker() {
+            const ticker = document.getElementById('live-ticker');
+            if (!ticker) return;
+            const items = [
+                '<span class="ticker-item"><span class="t-dep">+5,240 USDT</span> سحب • James W.</span>',
+                '<span class="ticker-item"><span class="t-dep">+12,800 USDT</span> إيداع • Sophia M.</span>',
+                '<span class="ticker-item"><span class="t-wit">+2,150 USDT</span> سحب • Oliver B.</span>',
+                '<span class="ticker-item"><span class="t-dep">+34,500 USDT</span> إيداع • Emma D.</span>',
+                '<span class="ticker-item"><span class="t-wit">+8,720 USDT</span> سحب • Liam S.</span>',
+                '<span class="ticker-item"><span class="t-dep">+19,300 USDT</span> إيداع • Charlotte K.</span>'
+            ];
+            ticker.innerHTML = items.join('') + items.join('');
+        }
+
+        // ========== إشعارات السوق الحقيقية (API مباشر) ==========
+        async function fetchMarketPrices() {
+            try {
+                const symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT'];
+                const responses = await Promise.all(
+                    symbols.map(sym => fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}`).then(r => r.json()))
+                );
+                
+                const prices = {};
+                responses.forEach(data => {
+                    const base = data.symbol.replace('USDT', '');
+                    prices[base] = {
+                        price: parseFloat(data.lastPrice).toFixed(2),
+                        change: parseFloat(data.priceChangePercent).toFixed(2)
+                    };
+                });
+                return prices;
+            } catch (error) {
+                console.warn('تعذر جلب الأسعار من Binance, استخدام قيم احتياطية', error);
+                return {
+                    BTC: { price: '68421.50', change: '2.34' },
+                    ETH: { price: '3512.80', change: '-0.87' },
+                    SOL: { price: '142.15', change: '5.21' }
+                };
+            }
+        }
+
+        function formatMarketMessage(prices) {
+            const btc = prices.BTC;
+            const eth = prices.ETH;
+            const sol = prices.SOL;
+            
+            const btcChangeClass = parseFloat(btc.change) >= 0 ? 'price-up' : 'price-down';
+            const ethChangeClass = parseFloat(eth.change) >= 0 ? 'price-up' : 'price-down';
+            const solChangeClass = parseFloat(sol.change) >= 0 ? 'price-up' : 'price-down';
+            
+            return `
+                <span>🔥 BTC: $${btc.price} <span class="${btcChangeClass}">(${btc.change}%)</span></span>
+                <span style="margin:0 20px;">♦️ ETH: $${eth.price} <span class="${ethChangeClass}">(${eth.change}%)</span></span>
+                <span>💧 SOL: $${sol.price} <span class="${solChangeClass}">(${sol.change}%)</span></span>
+                <span style="margin-right:20px;">📊 تحديث مباشر</span>
+            `;
+        }
+
+        async function updateMarketTicker() {
+            const container = document.getElementById('market-ticker-scroll');
+            if (!container) return;
+            
+            try {
+                const prices = await fetchMarketPrices();
+                container.innerHTML = formatMarketMessage(prices);
+            } catch (e) {
+                container.innerHTML = '⚡ جاري تحميل بيانات السوق...';
+            }
+        }
+
+        function startMarketUpdates() {
+            if (marketUpdateInterval) clearInterval(marketUpdateInterval);
+            updateMarketTicker();
+            marketUpdateInterval = setInterval(updateMarketTicker, 30000);
+        }
+
+        function handleNavAction(action) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            switch(action) {
+                case 'home': document.getElementById('nav-home').classList.add('active'); navTo('home'); break;
+                case 'vip': document.getElementById('nav-vip').classList.add('active'); navTo('vip'); break;
+                case 'wallet': document.getElementById('nav-wallet').classList.add('active'); openWithdraw(); break;
+                case 'trade': document.getElementById('nav-trade').classList.add('active'); openSyncModal(); break;
+                case 'chart': document.getElementById('nav-chart').classList.add('active'); document.getElementById('chart-modal').classList.remove('hidden'); break;
+                case 'account': document.getElementById('nav-account').classList.add('active'); navTo('me'); break;
+                default: break;
+            }
         }
 
         function navTo(page) {
             const cont = document.getElementById('main-content');
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(n => n.classList.remove('active'));
-            const activeNav = document.getElementById('n-' + page);
-            if(activeNav) activeNav.classList.add('active');
             window.scrollTo(0,0);
             clearInterval(investorInterval);
-
+            if (marketUpdateInterval) clearInterval(marketUpdateInterval);
+            
             if(page === 'home') {
                 cont.innerHTML = `
                     <div class="ticker-wrap"><div class="ticker" id="live-ticker"></div></div>
-                    <div class="fade-in">
-                        <div style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=800'); height: 180px; background-size: cover; margin: 15px; border-radius: 25px; display: flex; flex-direction: column; justify-content: center; padding: 20px; border: 1px solid var(--border);">
-                            <h2 style="margin:0;">مرحباً بك في نيومونت</h2>
-                            <p style="font-size:12px; opacity:0.8;">اربح 65 USDT يومياً من المستوى الجديد</p>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px;">
-                            <div onclick="openDeposit()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-plus-circle" style="color:var(--success); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">إيداع</div></div>
-                            <div onclick="openWithdraw()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-money-bill-transfer" style="color:var(--accent); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">سحب</div></div>
-                            <div onclick="openSyncModal()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-sync-alt" style="color:#0ea5e9; font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">التزامن بالصفقة</div></div>
-                            <div onclick="navTo('team')" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-gift" style="color:var(--gold); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">مكافأة</div></div>
-                            <div onclick="openTelegram()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-brands fa-telegram" style="color:var(--tg-blue); font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">دعم</div></div>
-                            <div onclick="openHistory()" style="text-align:center; background:var(--card); padding:15px 5px; border-radius:18px;"><i class="fa-solid fa-receipt" style="color:#94a3b8; font-size:22px;"></i><div style="font-size:11px; margin-top:8px;">السجلات</div></div>
-                        </div>
-                        <div style="padding: 15px;"><h3 style="margin:0 0 15px; font-size:16px;">سحوبات مباشرة</h3><div id="investor-list"></div></div>
-                    </div>`;
-                initTicker(); renderInvestors(); investorInterval = setInterval(renderInvestors, 3000);
-            } 
-            else if(page === 'team') {
-                cont.innerHTML = `
-                <div class="fade-in" style="padding:20px;">
-                    <h3>نظام الإحالة والمكافآت</h3>
-                    <div class="stat-grid">
-                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">حجم الفريق</div><div style="font-weight:bold; font-size:18px;">${currentVIPLevel !== 0 ? '14' : '0'}</div></div>
-                        <div class="stat-box"><div style="font-size:10px; color:var(--text-dim);">إجمالي العمولة</div><div style="font-weight:bold; color:var(--success); font-size:18px;">${currentVIPLevel !== 0 ? '124.50' : '0.00'}</div></div>
-                    </div>
-                    <div class="card">
-                        <div style="font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-link" style="color:var(--accent);"></i> رابط الدعوة الخاص بك:</div>
-                        <div class="addr-display" onclick="copyOnly('https://exurs7app.github.io/finance-app/')">https://exurs7app.github.io/finance-app/</div>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <div style="flex:1;">
-                                <div style="font-size:11px; color:var(--text-dim);">كود الدعوة:</div>
-                                <div onclick="copyOnly('${sessionInviteCode}')" style="background:#000; padding:10px; border-radius:10px; text-align:center; font-weight:bold; border:1px solid var(--border); cursor:pointer;">${sessionInviteCode}</div>
-                            </div>
-                            <button class="btn-main" style="width:100px; height:45px; align-self:flex-end;" onclick="copyOnly('https://exurs7app.github.io/finance-app/')">نسخ الرابط</button>
-                        </div>
-                    </div>
-                    <h4 style="margin:20px 0 10px;">مستويات الأرباح</h4>
-                    <div class="card" style="padding:0; overflow:hidden;">
-                        <div style="padding:15px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between;"><span>المستوى A (مباشر)</span><span style="color:var(--success); font-weight:bold;">15%</span></div>
-                        <div style="padding:15px; border-bottom:1px solid #1a1a1a; display:flex; justify-content:space-between;"><span>المستوى B</span><span style="color:var(--accent); font-weight:bold;">3%</span></div>
-                        <div style="padding:15px; display:flex; justify-content:space-between;"><span>المستوى C</span><span style="color:var(--gold); font-weight:bold;">2%</span></div>
-                    </div>
-                </div>`;
-            }
-            else if(page === 'task') {
-                let taskHtml = `
-                <div class="fade-in" style="padding: 20px;">
-                    <div class="card" style="text-align:center; border-style: dashed; border-color: var(--accent);">
-                        <div style="color:var(--text-dim); font-size:12px;">تجديد المهام</div>
-                        <div id="timer" style="font-size:24px; font-weight:900; color:var(--gold); margin:5px 0;">00:00:00</div>
-                    </div>`;
-
-                vipsData.forEach((v, index) => {
-                    const isSpecial = v.special === true;
-                    taskHtml += `
-                    <div class="card fade-in ${isSpecial ? 'featured-task-green' : ''}" style="display:flex; align-items:center; gap:15px; border-right: 4px solid ${isSpecial ? 'var(--success)' : 'var(--accent)'};">
-                        ${isSpecial ? '<div class="task-badge-green">مهمة عاجلة 🔥</div>' : ''}
-                        <div style="background:#1a1a1a; width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center;">
-                            <i class="fa-solid ${v.icon}" style="color:${isSpecial ? 'var(--success)' : 'var(--accent)'};"></i>
-                        </div>
-                        <div style="flex:1;">
-                            <h4 style="margin:0; font-size:${isSpecial ? '15px' : '14px'}">مهمة VIP ${v.l}</h4>
-                            <div style="display:flex; gap:10px; align-items:center; margin-top:4px;">
-                                <span style="font-size:10px; color:var(--text-dim);">السعر: ${v.p} USDT</span>
-                                <span style="color:var(--success); font-weight:900; font-size:${isSpecial ? '15px' : '13px'};">+ ${v.d.toFixed(2)} USDT</span>
+                    <div style="padding: 15px;">
+                        <div class="wallet-total-card fade-in">
+                            <div class="bontx-header"><i class="fa-solid fa-cube" style="color: var(--accent); font-size: 24px;"></i><span class="bontx-logo">BontX</span><span style="margin-right: auto; font-size: 12px; background: #1e293b; padding: 4px 12px; border-radius: 30px;">إصدار 2.0</span></div>
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;"><div><div style="font-size: 13px; color: var(--text-dim);">إجمالي المحفظة</div><div style="font-size: 34px; font-weight: 900;">$${currentBalance.toFixed(2)}</div></div><div style="text-align: left;"><div style="font-size: 12px; color: var(--text-dim);">متابعة</div><div style="font-size: 20px; font-weight: bold; color: #ccc;">$${(todayEarned * 0.3).toFixed(2)}</div></div></div>
+                            <div class="badge-triple"><span class="badge-item"><i class="fa-regular fa-circle-check" style="color:var(--success); margin-left:5px;"></i>مدعي</span><span class="badge-item"><i class="fa-regular fa-pen-to-square" style="color:var(--gold); margin-left:5px;"></i>ممضي</span><span class="badge-item"><i class="fa-solid fa-lock" style="color:var(--accent); margin-left:5px;"></i>مشفر</span></div>
+                            <div class="action-row"><div class="action-btn" onclick="openDeposit()"><i class="fa-solid fa-circle-plus"></i> إضافة أموال</div><div class="action-btn" onclick="openWithdraw()"><i class="fa-solid fa-eye"></i> عرض المحفظة</div></div>
+                            <div style="background: rgba(59, 130, 246, 0.1); border-radius: 16px; padding: 14px; margin: 10px 0; border-right: 4px solid var(--accent);"><div style="font-weight: bold; margin-bottom: 5px;">ابدأ التداول</div><div style="font-size: 12px; color: #bbb;">افتح أول صفقة عقود أدلة الأمن</div></div>
+                            <div class="action-row" style="margin-top: 5px;"><div class="action-btn" onclick="navTo('team')"><i class="fa-solid fa-user-plus"></i> دعوة</div><div class="action-btn" onclick="openWithdraw()"><i class="fa-solid fa-arrow-down"></i> سحب</div><div class="action-btn" onclick="openSyncModal()"><i class="fa-solid fa-chart-line"></i> تداول</div><div class="action-btn" onclick="openDeposit()"><i class="fa-solid fa-arrow-up"></i> إيداع</div></div>
+                            <div class="crypto-ticker"><div class="crypto-item"><span class="crypto-name">SOL</span><div class="crypto-price" id="disp-sol">$142.15</div></div><div class="crypto-item"><span class="crypto-name">ETH</span><div class="crypto-price" id="disp-eth">$3,512</div></div><div class="crypto-item"><span class="crypto-name">BTC</span><div class="crypto-price" id="disp-btc">$68,421</div></div></div>
+                            
+                            <div class="market-notice">
+                                <span style="display:flex; align-items:center;"><i class="fa-solid fa-newspaper" style="margin-left: 8px; color: var(--gold);"></i>أشعار السوق</span>
+                                <div class="market-ticker-content">
+                                    <div class="market-scroll" id="market-ticker-scroll">⏳ جاري تحميل بيانات السوق...</div>
+                                </div>
+                                <span class="live-badge"><i class="fa-solid fa-circle" style="font-size: 6px; margin-left: 5px;"></i>مباشر</span>
                             </div>
                         </div>
-                        <button class="btn-main ${isSpecial ? 'btn-success-pulse' : ''}" style="width:auto; padding:8px 18px; font-size: 12px;" onclick="doTask('${v.l}')">تنفيذ</button>
+                        <div style="margin: 24px 0 8px;"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;"><i class="fa-solid fa-chart-pie" style="color: var(--accent);"></i><h3 style="margin:0; font-size: 18px;">تحليلات السوق</h3><span style="margin-right: auto; font-size: 12px; background: #1e293b; padding: 4px 10px; border-radius: 30px;">📊 5.0 ★</span></div>
+                        <div class="analysis-grid"><div class="analysis-item"><i class="fa-solid fa-chart-line"></i><div class="analysis-label">تحليل فني</div><div class="analysis-value">5.0</div><span class="analysis-badge">شراء قوي</span></div><div class="analysis-item"><i class="fa-solid fa-scale-balanced"></i><div class="analysis-label">تحليل أساسي</div><div class="analysis-value">4.9</div><span class="analysis-badge">إيجابي</span></div><div class="analysis-item"><i class="fa-solid fa-coins"></i><div class="analysis-label">قيمة سوقية</div><div class="analysis-value">5.0</div><span class="analysis-badge">مستقر</span></div><div class="analysis-item"><i class="fa-solid fa-gauge-high"></i><div class="analysis-label">مؤشر القوة</div><div class="analysis-value">4.8</div><span class="analysis-badge">صاعد</span></div></div></div>
+                        <h3 style="margin: 20px 0 10px;"><i class="fa-solid fa-arrow-trend-up" style="color: var(--success); margin-left: 8px;"></i>آخر السحوبات</h3>
+                        <div id="investor-list"></div>
                     </div>`;
-                });
-
-                cont.innerHTML = taskHtml + `</div>`;
-                startTimer();
+                initTicker(); 
+                renderInvestors(); 
+                investorInterval = setInterval(renderInvestors, 3500);
+                startMarketUpdates();
+                setTimeout(async () => {
+                    const prices = await fetchMarketPrices();
+                    document.getElementById('disp-btc') && (document.getElementById('disp-btc').innerText = '$' + prices.BTC.price);
+                    document.getElementById('disp-eth') && (document.getElementById('disp-eth').innerText = '$' + prices.ETH.price);
+                    document.getElementById('disp-sol') && (document.getElementById('disp-sol').innerText = '$' + prices.SOL.price);
+                }, 500);
             } else if(page === 'vip') {
-                let html = `<div class="fade-in" style="padding:20px;"><h3>باقات VIP</h3>`;
-                vipsData.forEach(v => {
-                    const isSpecial = v.special === true;
-                    html += `<div class="card fade-in" style="border: 1px solid ${v.color}; background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%); position: relative; overflow: hidden;">${isSpecial ? '<div style="position:absolute; top:10px; left:-30px; background:var(--success); color:black; padding:5px 35px; transform:rotate(-45deg); font-size:10px; font-weight:bold;">HOT</div>' : ''}<div style="display:flex; justify-content:space-between; align-items:center;"><div style="display:flex; align-items:center; gap:12px;"><div style="width:45px; height:45px; background:rgba(255,255,255,0.05); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid ${v.icon}" style="color:${isSpecial ?'var(--success)':'var(--accent)'}; font-size:20px;"></i></div><div><h4 style="margin:0; font-size:16px;">VIP ${v.l}</h4><div style="font-size:12px; color:var(--text-dim); margin-top:4px;">السعر: ${v.p} USDT</div></div></div><div style="text-align:left;"><div style="color:var(--success); font-weight:900; font-size:18px;">${v.d}</div><div style="font-size:10px; color:var(--text-dim);">يومياً</div></div></div><button class="btn-main" style="margin-top:15px; background:${currentVIPLevel==v.l ? 'var(--success)' : (isSpecial ?'var(--success)':'var(--accent)')}" onclick="${currentVIPLevel==v.l ? "showToast('مفعل بالفعل ✅')" : 'openDeposit()'}">${currentVIPLevel==v.l ? 'مفعل حالياً' : 'فتح المستوى'}</button></div>`;
-                });
+                let html = `<div style="padding:20px;"><h3>باقات VIP</h3>`;
+                vipsData.forEach(v => html += `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span>VIP ${v.l} - ${v.p}$</span>
+                            <span style="color:var(--success);">+${v.d}$ يومياً</span>
+                        </div>
+                        <button class="btn-main" onclick="handleVIPTask(${v.p})">
+                            ${currentVIPLevel===v.l ? 'مفعل' : 'تفعيل'}
+                        </button>
+                    </div>
+                `);
                 cont.innerHTML = html + `</div>`;
             } else if(page === 'me') {
-                const userEmail = localStorage.getItem('user_email') || 'User_Guest';
-                const persistentID = getPersistentUserID();
+                const currentUser = getCurrentUser();
+                const userEmail = currentUser ? currentUser.email : (localStorage.getItem('user_email') || 'مستخدم');
+                const userID = getPersistentUserID();
+                let joinDate = currentUser ? currentUser.joinDate : new Date().toLocaleDateString('ar-EG');
                 cont.innerHTML = `
-                <div class="fade-in" style="padding-bottom: 40px;">
-                    <div class="me-header-card">
-                        <div style="display:flex; align-items:center; gap:15px; margin-bottom:18px;">
-                            <div style="width:75px; height:75px; background:linear-gradient(45deg, var(--accent), #4f46e5); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; border:3px solid rgba(255,255,255,0.15); box-shadow: 0 0 25px rgba(139, 92, 246, 0.45); position: relative;">
-                                <i class="fa-solid fa-user-astronaut"></i>
-                                <div style="position:absolute; bottom:0; right:0; background:var(--success); width:18px; height:18px; border-radius:50%; border:3px solid #0a0a0a;"></div>
-                            </div>
-                            <div style="flex:1;">
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <div style="font-weight:bold; font-size:15px; word-break:break-all; letter-spacing:0.5px;">${userEmail}</div>
-                                    <span class="vip-badge">VIP ${currentVIPLevel}</span>
-                                </div>
-                                <div style="font-size:11px; color:var(--text-dim); margin-top:5px; font-family:monospace;">ID: #${persistentID}</div>
-                                <div style="display:flex; gap:8px; margin-top:8px;">
-                                    <div class="shield-indicator"><i class="fa-solid fa-certificate"></i> موثق</div>
-                                    <div class="shield-indicator" style="background:rgba(139,92,246,0.1); color:var(--accent);"><i class="fa-solid fa-shield-check"></i> محمي</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-bottom:6px;">
-                            <span>مستوى الترقية (Exp)</span>
-                            <span>${currentVIPLevel !== 0 ? '98%' : '12%'} للوصول للهدف</span>
-                        </div>
-                        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: ${currentVIPLevel !== 0 ? '98%' : '12%'};"></div></div>
-                    </div>
-                    <div class="detailed-stats">
-                        <div class="d-stat-item">
-                            <span class="d-stat-val">${currentVIPLevel !== 0 ? '42' : '0'}</span>
-                            <span class="d-stat-lbl">المهام المنجزة</span>
-                        </div>
-                        <div class="d-stat-item">
-                            <span class="d-stat-val" style="color:var(--success);">${currentVIPLevel !== 0 ? '124.50' : '0.00'}</span>
-                            <span class="d-stat-lbl">دخل الفريق</span>
-                        </div>
-                        <div class="d-stat-item">
-                            <span class="d-stat-val" style="color:var(--gold);">${currentVIPLevel !== 0 ? '14%' : '0%'}</span>
-                            <span class="d-stat-lbl">معدل النمو</span>
-                        </div>
-                    </div>
-                    <div style="margin:0 15px;">
-                        <div class="card" style="padding:22px; border: 1px solid var(--border); background: linear-gradient(160deg, #161616 0%, #080808 100%); position: relative; overflow: hidden;">
-                            <div style="position:absolute; top: -20px; left: -20px; opacity: 0.05; font-size: 100px; color: white;"><i class="fa-solid fa-wallet"></i></div>
-                            <div style="text-align: center; margin-bottom: 20px; position: relative; z-index: 1;">
-                                <div style="font-size:10px; color:var(--text-dim); margin-bottom:8px; letter-spacing:2px; text-transform:uppercase;">إجمالي الرصيد المحاسبي</div>
-                                <div style="font-size:36px; font-weight:900; color:white; display:flex; align-items:center; justify-content:center; gap:10px;">
-                                    ${currentBalance.toFixed(2)} <span style="font-size:16px; color:var(--accent); font-weight: 400;">USDT</span>
-                                </div>
-                            </div>
-                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; border-top:1px solid #1f2937; padding-top:18px;">
-                                <div style="border-left: 1px solid #1f2937;">
-                                    <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">أرباح اليوم</div>
-                                    <div style="font-size:16px; font-weight:900; color:var(--success);">+${todayEarned.toFixed(2)}</div>
-                                </div>
-                                <div style="padding-right:10px;">
-                                    <div style="font-size:10px; color:var(--text-dim); margin-bottom:4px;">الرصيد المجمد</div>
-                                    <div style="font-size:16px; font-weight:900; color:var(--danger);">0.00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin:20px 15px;">
-                        <h4 style="font-size:13px; color:var(--text-dim); margin-bottom:12px; padding-right:5px; font-weight: 500;">مركز التحكم والأمان</h4>
-                        <div class="card" style="padding:0; overflow: hidden; background: #0a0a0a;">
-                            <div class="menu-item" onclick="openHistory()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
-                                <div style="width:36px; height:36px; background:rgba(245,158,11,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-receipt" style="color:var(--gold); font-size:16px;"></i></div>
-                                <div style="flex:1;">
-                                    <div style="font-size:14px; font-weight:600;">سجل التدقيق المالي</div>
-                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">كافة عمليات الإيداع والسحب والمهام</div>
-                                </div>
-                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
-                            </div>
-                            <div class="menu-item" onclick="openWithdraw()" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
-                                <div style="width:36px; height:36px; background:rgba(139,92,246,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-credit-card" style="color:var(--accent); font-size:16px;"></i></div>
-                                <div style="flex:1;">
-                                    <div style="font-size:14px; font-weight:600;">العناوين المربوطة</div>
-                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">إدارة محافظ TRC20 و BEP20</div>
-                                </div>
-                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
-                            </div>
-                            <div class="menu-item" style="display:flex; align-items:center; gap:15px; padding:18px; border-bottom:1px solid #161b22; cursor:pointer;">
-                                <div style="width:36px; height:36px; background:rgba(16,185,129,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-key" style="color:var(--success); font-size:16px;"></i></div>
-                                <div style="flex:1;">
-                                    <div style="font-size:14px; font-weight:600;">كلمة مرور الصندوق</div>
-                                    <div style="font-size:9px; color:var(--text-dim); margin-top:2px;">تأمين عمليات السحب بكلمة مرور ثانية</div>
-                                </div>
-                                <i class="fa-solid fa-chevron-left" style="font-size:12px; color:#333;"></i>
-                            </div>
-                            <div class="menu-item" onclick="logout()" style="display:flex; align-items:center; gap:15px; padding:18px; color:var(--danger); cursor:pointer;">
-                                <div style="width:36px; height:36px; background:rgba(239,68,68,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-right-from-bracket" style="font-size:16px;"></i></div>
-                                <div style="flex:1;">
-                                    <div style="font-size:14px; font-weight:bold;">إنهاء الجلسة الآمن</div>
-                                    <div style="font-size:9px; color:rgba(239,68,68,0.6); margin-top:2px;">تسجيل خروج ومسح بيانات الجلسة</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="text-align:center; font-size:10px; color:var(--text-dim); margin-top:20px; opacity:0.4; letter-spacing:1px;">NEWMONT PLATFORM v2.0.4 PRO EDITION</div>
-                    </div>
+                <div style="padding:15px;">
+                    <div class="me-header-card"><div style="display:flex; gap:15px; align-items:center;"><i class="fa-solid fa-user-astronaut" style="font-size:40px;"></i><div><b style="font-size:18px;">${userEmail}</b><div class="vip-badge" style="margin-top:5px;">VIP ${currentVIPLevel}</div></div></div><div class="progress-bar-wrap" style="margin:16px 0 8px;"><div class="progress-bar-fill" style="width:${Math.min(currentVIPLevel*8, 80)}%;"></div></div><div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-dim);"><span>المستوى الحالي</span><span>المستوى التالي: VIP ${currentVIPLevel+1}</span></div></div>
+                    <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin:15px 0;"><div class="d-stat-item"><span class="d-stat-val">$${currentBalance.toFixed(2)}</span><span class="d-stat-lbl">الرصيد</span></div><div class="d-stat-item"><span class="d-stat-val">$${totalDeposited.toFixed(2)}</span><span class="d-stat-lbl">إيداع</span></div><div class="d-stat-item"><span class="d-stat-val">$${totalWithdrawn.toFixed(2)}</span><span class="d-stat-lbl">مسحوب</span></div><div class="d-stat-item"><span class="d-stat-val">$${totalProfit.toFixed(2)}</span><span class="d-stat-lbl">الأرباح</span></div></div>
+                    <div class="account-section-title"><i class="fa-solid fa-id-card" style="color:var(--accent);"></i><span>معلومات الحساب</span></div>
+                    <div class="card" style="padding:5px 15px;"><div class="info-row"><span class="info-label"><i class="fa-regular fa-user"></i> معرف المستخدم</span><span class="info-value" onclick="copyOnly('${userID}')" style="cursor:pointer;">${userID} <i class="fa-regular fa-copy" style="font-size:10px;"></i></span></div><div class="info-row"><span class="info-label"><i class="fa-regular fa-calendar"></i> تاريخ الانضمام</span><span class="info-value">${joinDate}</span></div><div class="info-row"><span class="info-label"><i class="fa-regular fa-circle-check"></i> حالة الحساب</span><span class="info-value" style="color:var(--success);">نشط ✅</span></div><div class="info-row" style="border-bottom:none;"><span class="info-label"><i class="fa-solid fa-link"></i> رمز الإحالة</span><span class="info-value" onclick="copyOnly('${sessionInviteCode}')" style="cursor:pointer;">${sessionInviteCode} <i class="fa-regular fa-copy"></i></span></div></div>
+                    <div class="account-section-title"><i class="fa-solid fa-shield-halved" style="color:var(--gold);"></i><span>الأمان والخصوصية</span></div>
+                    <div class="card" style="padding:5px 15px;"><div class="info-row"><span class="info-label"><i class="fa-solid fa-lock"></i> كلمة المرور</span><span class="security-badge" onclick="showToast('يمكنك تغيير كلمة المرور من الإعدادات')" style="cursor:pointer;">●●●●●●●● <i class="fa-regular fa-pen-to-square"></i></span></div><div class="info-row"><span class="info-label"><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</span><span class="info-value">${userEmail} <i class="fa-regular fa-circle-check" style="color:var(--success);"></i></span></div><div class="info-row" style="border-bottom:none;"><span class="info-label"><i class="fa-solid fa-qrcode"></i> التحقق بخطوتين</span><span class="info-value" style="color:var(--danger);" onclick="showToast('قم بتفعيل 2FA لتعزيز الأمان')">غير مفعل <i class="fa-regular fa-bell"></i></span></div></div>
+                    <button class="btn-main install-btn" onclick="triggerInstallOrInstructions()"><i class="fa-solid fa-download"></i> تثبيت التطبيق على الجهاز</button>
+                    <button class="btn-main" onclick="openHistory()" style="margin-top:12px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل المعاملات الكامل</button>
+                    <button class="btn-outline" onclick="showToast('سيتم فتح إعدادات الحساب قريباً')"><i class="fa-regular fa-gear"></i> إعدادات متقدمة</button>
+                    <button class="btn-outline" style="border-color:var(--danger); color:var(--danger);" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج</button>
                 </div>`;
+            } else if(page === 'team') {
+                cont.innerHTML = `<div style="padding:20px;"><h3>فريق الإحالة</h3><div class="stat-grid"><div class="stat-box">الأعضاء: 0</div><div class="stat-box">العمولة: 0.00$</div></div><div class="card"><div>رابط الدعوة:</div><div class="addr-display" onclick="copyOnly('https://exurs7app.github.io/finance-app/')">https://exurs7app.github.io/finance-app/</div><div>كود الدعوة: <span onclick="copyOnly('${sessionInviteCode}')" style="background:#000; padding:6px 12px; border-radius:8px;">${sessionInviteCode}</span></div></div><h4>مستويات الأرباح</h4><div class="card">مباشر 15% • المستوى B 3% • المستوى C 2%</div></div>`;
             }
         }
 
-        function initTicker() {
-            const ticker = document.getElementById('live-ticker'); if(!ticker) return;
-            const users = ['Ahmed', 'Samy', 'Omer', 'Fatima', 'Vip_King', 'Sara', 'Khalid', 'Ali'];
-            let content = "";
-            for(let i=0; i<10; i++) {
-                const user = users[Math.floor(Math.random()*users.length)] + "****";
-                const amount = (Math.random()*150 + 5).toFixed(2);
-                const isDep = Math.random() > 0.5;
-                content += `<div class="ticker-item">المستثمر <span>${user}</span> قام بـ ${isDep?'إيداع':'سحب'} <span class="${isDep?'t-dep':'t-wit'}">${amount} USDT</span></div>`;
+        // ---------- PWA & تثبيت التطبيق ----------
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'bontx-v1';
+                    const urlsToCache = [
+                        '.',
+                        'index.html',
+                        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+                        'https://cdn-icons-png.flaticon.com/512/2150/2150150.png'
+                    ];
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request).then(response => response || fetch(event.request))
+                        );
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).then(reg => {
+                    console.log('Service Worker registered');
+                }).catch(err => console.log('SW registration failed', err));
             }
-            ticker.innerHTML = content + content;
         }
 
-        function renderInvestors() {
-            const list = document.getElementById('investor-list'); if(!list) return;
-            const names = ['Khalid', 'Samy_2', 'Mona_T', 'CryptoPro', 'Ali99', 'Ahmed_V'];
-            let h = "";
-            for(let i=0; i<5; i++) {
-                const n = names[Math.floor(Math.random()*names.length)];
-                const a = (Math.random()*500 + 5).toFixed(2);
-                h += `<div class="card fade-in" style="margin-bottom:8px; padding:10px; display:flex; justify-content:space-between; background:#0a0a0a; border:1px solid #1a1a1a; font-size:12px;"><span>${n}****</span><span style="color:var(--gold); font-weight:bold;">+ ${a} USDT</span></div>`;
-            }
-            list.innerHTML = h;
-        }
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
 
-        function openHistory() {
-            const list = document.getElementById('history-list');
-            list.innerHTML = transactions.length === 0 ? `<div style="text-align:center; color:var(--text-dim); margin-top:30px;">لا يوجد سجلات</div>` : "";
-            transactions.forEach(t => {
-                list.innerHTML += `<div class="history-card fade-in"><div class="hist-info"><div class="hist-type">${t.type}</div><div class="hist-date">${t.date}</div><div class="hist-status" style="background:${t.color}22; color:${t.color}; border:1px solid ${t.color}55;">${t.status}</div></div><div class="hist-amount-box"><div class="hist-amount" style="color:${t.amount.includes('+') ? 'var(--success)' : 'var(--danger)'}">${t.amount}</div><div style="font-size:10px; color:var(--text-dim);">USDT</div></div></div>`;
-            });
-            document.getElementById('history-modal').classList.remove('hidden');
-        }
-
-        function openDeposit() { document.getElementById('deposit-modal').classList.remove('hidden'); startDepTimer(); }
-        
-        function openWithdraw() { 
-            document.getElementById('with-bal').innerText = currentBalance.toFixed(2); 
-            const histList = document.getElementById('quick-withdraw-history');
-            const withdraws = transactions.filter(t => t.type.includes('سحب'));
-            if(withdraws.length === 0) {
-                histList.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding:10px;">لا توجد سجلات سحب بعد</div>`;
-            } else {
-                histList.innerHTML = "";
-                withdraws.forEach(t => {
-                    histList.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid var(--border);">
-                            <div>
-                                <div style="font-weight:bold;">${t.amount} USDT</div>
-                                <div style="font-size:9px; color:var(--text-dim);">${t.date}</div>
-                            </div>
-                            <div style="font-size:9px; background:${t.color}22; color:${t.color}; padding:2px 6px; border-radius:4px;">${t.status}</div>
-                        </div>`;
+        function triggerInstallOrInstructions() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showToast('🎉 جاري تثبيت التطبيق...', '#10b981');
+                    }
+                    deferredPrompt = null;
                 });
-            }
-            document.getElementById('withdraw-modal').classList.remove('hidden'); 
-        }
-
-        function closeModals() { document.querySelectorAll('.overlay').forEach(m => m.classList.add('hidden')); }
-        
-        function switchWallet(type) {
-            document.getElementById('btn-trc').style.background = (type === 'TRC') ? 'var(--accent)' : '#222';
-            document.getElementById('btn-bnb').style.background = (type === 'BNB') ? 'var(--accent)' : '#222';
-            document.getElementById('addr-text').innerText = wallets[type];
-        }
-
-        function startDepTimer() {
-            let sec = 1799;
-            const el = document.getElementById('dep-countdown');
-            const it = setInterval(() => {
-                let m = Math.floor(sec/60), s = sec%60;
-                if(el) el.innerText = `صلاحية العنوان: ${m}:${s<10?'0'+s:s}`;
-                if(sec <= 0) clearInterval(it);
-                sec--;
-            }, 1000);
-        }
-
-        function doTask(lvl) {
-            if (currentVIPLevel == lvl) {
-                showToast("⏳ جاري تنفيذ المهمة...", "#10b981");
-                setTimeout(() => { showToast("✅ تمت المهمة! الرصيد سيحدث قريباً", "#10b981"); }, 1500);
             } else {
-                showToast("⏳ جاري المعالجة...", "#8b5cf6");
-                setTimeout(() => { showToast("❌ خطأ: لم يتم تفعيل VIP " + lvl, "#ef4444"); setTimeout(openDeposit, 800); }, 1200);
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    document.getElementById('install-instructions-modal').classList.remove('hidden');
+                } else {
+                    showToast('ℹ️ التطبيق قد يكون مثبتاً بالفعل أو استخدم قائمة المتصفح للتثبيت', '#f59e0b');
+                }
             }
         }
 
-        function startTimer() {
-            setInterval(() => {
-                const t = document.getElementById('timer'); if(!t) return;
-                const now = new Date();
-                const h = 23 - now.getHours(), m = 59 - now.getMinutes(), s = 59 - now.getSeconds();
-                t.innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
-            }, 1000);
-        }
+        window.triggerInstallOrInstructions = triggerInstallOrInstructions;
 
-        function openTelegram() { window.open('https://t.me/NEWMONTServer_bot', '_blank'); }
-        function logout() { localStorage.clear(); location.reload(); }
-
-        window.onload = () => { 
-            if(localStorage.getItem('logged')) { 
-                showPage('app'); 
-                navTo('home'); 
+        window.onload = function() {
+            registerServiceWorker();
+            if (localStorage.getItem('logged') === 'true') {
+                showPage('app');
+                navTo('home');
             } else {
                 showPage('login-page');
             }
         };
     </script>
 </body>
-</html>
+    </html>
